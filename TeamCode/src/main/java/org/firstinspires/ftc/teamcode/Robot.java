@@ -56,6 +56,14 @@ public class Robot {
                 break;
             case SouthEast:
                 //Caroline insert code here
+                frontRight.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER) ;
+                backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                frontRight.setTargetPosition( -(int) Math.round(centimetersDividedByWheelCircumference*1220));
+                backLeft.setTargetPosition( -(int) Math.round(centimetersDividedByWheelCircumference*1220));
+                frontRight.setPower(-0.5);
+                backLeft.setPower(-0.5);
                 break;
             case South:
             //Jborn insert code here
@@ -82,6 +90,15 @@ public class Robot {
                 break;
             case NorthWest:
                 //Caroline insert code here
+                frontRight.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER) ;
+                backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                frontRight.setTargetPosition( (int) Math.round(centimetersDividedByWheelCircumference*1220));
+                backLeft.setTargetPosition( (int) Math.round(centimetersDividedByWheelCircumference*1220));
+                frontRight.setPower(0.5);
+                backLeft.setPower(0.5);
+
                 break;
         }
     }
