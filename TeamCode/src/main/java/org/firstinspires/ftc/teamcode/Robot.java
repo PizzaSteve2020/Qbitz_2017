@@ -26,7 +26,7 @@ public class Robot {
     }
 
     public void Drive(MechDriveDirections direction, int centimeters) {
-        double centimetersDividedbyWheelCircumference = centimeters/wheelCircumference;
+        double centimetersDividedByWheelCircumference = centimeters/wheelCircumference;
         switch(direction) {
             case North:
                 //John insert code here
@@ -35,21 +35,19 @@ public class Robot {
                 //Steve insert code here
                 //One encoder tick in setTargetPosition is equal to about 0.026 cm using our 4 inch diameter wheels
                 //Our wheel circumference is about 32 centimeters
-
+                //Resets Encoders
+                frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                //Sets mode to run using encoders
                 frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-                frontLeft.getCurrentPosition();
-                backRight.getCurrentPosition();
-
-                frontLeft.setTargetPosition( (int) Math.round( centimetersDividedbyWheelCircumference*1220 ) );
-                backRight.setTargetPosition( (int) Math.round( centimetersDividedbyWheelCircumference*1220 ) );
-
+                //Sets the position we need to reach
+                frontLeft.setTargetPosition( (int) Math.round( centimetersDividedByWheelCircumference*1220 ) );
+                backRight.setTargetPosition( (int) Math.round( centimetersDividedByWheelCircumference*1220 ) );
+                //Sets power to apply to motors UNTIL it reaches target position
                 frontLeft.setPower(0.5);
                 backRight.setPower(0.5);
 
-                frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
                 break;
@@ -65,20 +63,19 @@ public class Robot {
             case SouthWest:
                 //Steve insert code here
                 //Same code as NorthEast but the opposite
+                //Resets Encoders
+                frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                //Sets mode to run using encoders
                 frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
                 backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-                frontLeft.getCurrentPosition();
-                backRight.getCurrentPosition();
-
-                frontLeft.setTargetPosition( -(int) Math.round( centimetersDividedbyWheelCircumference*1220 ) );
-                backRight.setTargetPosition( -(int) Math.round( centimetersDividedbyWheelCircumference*1220 ) );
-
+                //Sets the position we need to reach
+                frontLeft.setTargetPosition( -(int) Math.round( centimetersDividedByWheelCircumference*1220 ) );
+                backRight.setTargetPosition( -(int) Math.round( centimetersDividedByWheelCircumference*1220 ) );
+                //Sets power to apply to motors UNTIL it reaches target position
                 frontLeft.setPower(-0.5);
                 backRight.setPower(-0.5);
 
-                frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
                 break;
             case West:
                 //Mark insert code here
