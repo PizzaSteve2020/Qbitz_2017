@@ -87,7 +87,9 @@ public class Robot {
     }
 
     public void Rotate(double angle) {
-        //Grace put stuff here
-
+        frontLeft.setPower(angle);
+        backLeft.setPower(angle);
+        frontRight.setPower(-angle);
+        backRight.setPower(-angle);
     }
 }
