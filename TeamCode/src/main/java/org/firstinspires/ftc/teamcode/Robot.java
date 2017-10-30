@@ -8,11 +8,15 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  */
 
 public class Robot {
-    private DcMotor frontLeft;
-    private DcMotor frontRight;
-    private DcMotor backLeft;
-    private DcMotor backRight;
-    private double wheelCircumference = 32;
+    private final DcMotor frontLeft;
+    private final DcMotor frontRight;
+    private final DcMotor backLeft;
+    private final DcMotor backRight;
+
+    private final double wheelCircumference = 10.16*Math.PI;
+
+    private final int encoderTicks = 1220;
+
     public Robot(HardwareMap hardwareMap) {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
@@ -26,81 +30,63 @@ public class Robot {
     }
 
     public void Drive(MechDriveDirections direction, int centimeters) {
-        double centimetersDividedByWheelCircumference = centimeters/wheelCircumference;
         switch(direction) {
             case North:
                 //John insert code here
                 break;
             case NorthEast:
-                //Steve insert code here
-                //One encoder tick in setTargetPosition is equal to about 0.026 cm using our 4 inch diameter wheels
-                //Our wheel circumference is about 32 centimeters
-                //Resets Encoders
-                frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                //Sets mode to run using encoders
-                frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                //Sets the position we need to reach
-                frontLeft.setTargetPosition( (int) Math.round( centimetersDividedByWheelCircumference*1220 ) );
-                backRight.setTargetPosition( (int) Math.round( centimetersDividedByWheelCircumference*1220 ) );
-                //Sets power to apply to motors UNTIL it reaches target position
-                frontLeft.setPower(0.5);
-                backRight.setPower(0.5);
-
-
-
+                DriveDiagonal(centimeters, frontLeft, backRight);
                 break;
             case East:
                 //Mark insert code here
                 break;
             case SouthEast:
-                //Caroline insert code here
-                frontRight.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER) ;
-                backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                frontRight.setTargetPosition( -(int) Math.round(centimetersDividedByWheelCircumference*1220));
-                backLeft.setTargetPosition( -(int) Math.round(centimetersDividedByWheelCircumference*1220));
-                frontRight.setPower(-0.5);
-                backLeft.setPower(-0.5);
+                DriveDiagonal(-centimeters, frontRight, backLeft);
                 break;
             case South:
             //Jborn insert code here
                 break;
             case SouthWest:
-                //Steve insert code here
-                //Same code as NorthEast but the opposite
-                //Resets Encoders
-                frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                //Sets mode to run using encoders
-                frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                //Sets the position we need to reach
-                frontLeft.setTargetPosition( -(int) Math.round( centimetersDividedByWheelCircumference*1220 ) );
-                backRight.setTargetPosition( -(int) Math.round( centimetersDividedByWheelCircumference*1220 ) );
-                //Sets power to apply to motors UNTIL it reaches target position
-                frontLeft.setPower(-0.5);
-                backRight.setPower(-0.5);
-
+                DriveDiagonal(-centimeters, frontLeft, backRight);
                 break;
             case West:
                 //Mark insert code here
                 break;
             case NorthWest:
-                //Caroline insert code here
-                frontRight.setMode (DcMotor.RunMode.STOP_AND_RESET_ENCODER) ;
-                backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                frontRight.setTargetPosition( (int) Math.round(centimetersDividedByWheelCircumference*1220));
-                backLeft.setTargetPosition( (int) Math.round(centimetersDividedByWheelCircumference*1220));
-                frontRight.setPower(0.5);
-                backLeft.setPower(0.5);
-
+                DriveDiagonal(centimeters, frontRight, backLeft);
                 break;
         }
+    }
+
+    private void DriveVertical (int centimeters){
+
+    }
+
+    private void DriveHorizontal (int centimeters){
+
+    }
+
+    private void DriveDiagonal (int centimeters, DcMotor motor1, DcMotor motor2){
+        //One encoder tick in setTargetPosition is equal to about 0.026 cm using our 4 inch diameter wheels
+        //Our wheel circumference is about 32 centimeters
+        double centimetersDividedByWheelCircumference = centimeters/wheelCircumference;
+
+        //Resets Encoders
+        motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        //Sets mode to run using encoders
+        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        //Sets the position we need to reach
+        motor1.setTargetPosition( (int) Math.round( centimetersDividedByWheelCircumference*encoderTicks) );
+        motor2.setTargetPosition( (int) Math.round( centimetersDividedByWheelCircumference*encoderTicks) );
+
+        //Sets power to apply to motors UNTIL it reaches target position
+        double power = centimeters > 0 ? 0.5 : -0.5;
+        motor1.setPower(power);
+        motor2.setPower(power);
     }
 
     public void Rotate(double angle) {
