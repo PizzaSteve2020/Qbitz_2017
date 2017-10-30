@@ -4,17 +4,20 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
+
+import java.util.Vector;
+
+/**
+ * Created by Steve on 10/24/2017.
+ */
 
 public class Robot {
+    Vector vector = new Vector(2);
+
     private final DcMotor frontLeft;
     private final DcMotor frontRight;
     private final DcMotor backLeft;
     private final DcMotor backRight;
-
-    private Position position = new Position(DistanceUnit.CM, 0, 0, 1, System.nanoTime());
-    private VectorF direction = new VectorF(0,1);
 
     private final double wheelCircumference = 10.16*Math.PI;
 
@@ -36,6 +39,7 @@ public class Robot {
         switch(direction) {
             case North:
                 //John insert code here
+
                 break;
             case NorthEast:
                 DriveDiagonal(centimeters, frontLeft, backRight);
@@ -47,7 +51,7 @@ public class Robot {
                 DriveDiagonal(-centimeters, frontRight, backLeft);
                 break;
             case South:
-            //Jborn insert code here
+                //Jborn insert code here
                 break;
             case SouthWest:
                 DriveDiagonal(-centimeters, frontLeft, backRight);
@@ -98,4 +102,16 @@ public class Robot {
         frontRight.setPower(-angle);
         backRight.setPower(-angle);
     }
+
+    public void moveToPoint(Tuple tuple) {
+        vector.addElement(tuple.x);
+        vector.addElement(tuple.y);
+        //Step one get -- vector Y
+        //Need Dak's vector X and current position methods
+
+        //Step two get angle Theta needed to rotate
+
+    }
+
+
 }
