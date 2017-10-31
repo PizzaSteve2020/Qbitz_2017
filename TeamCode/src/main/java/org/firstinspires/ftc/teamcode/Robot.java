@@ -7,12 +7,19 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 
 import java.util.Vector;
 
+import static org.firstinspires.ftc.teamcode.MechDriveDirections.North;
+
 /**
  * Created by Steve on 10/24/2017.
  */
 
 public class Robot {
-    Vector vector = new Vector(2);
+
+    public Tuple currentPosition = new Tuple(x,y); //Insert current position here...?
+    public Tuple targetPosition = new Tuple(x,y); //Insert target position here...?
+
+    public Vector currentVector = new Vector(x,y); //Insert current vector here...?
+    public Vector targetVector = new Vector(getTargetVector(currentPosition, targetPosition ));
 
     private final DcMotor frontLeft;
     private final DcMotor frontRight;
@@ -103,15 +110,32 @@ public class Robot {
         backRight.setPower(-angle);
     }
 
-    public void moveToPoint(Tuple tuple) {
-        vector.addElement(tuple.x);
-        vector.addElement(tuple.y);
+    public void moveToPoint(Tuple pointToMoveTo) {
+        double angleTheta;
         //Step one get -- vector Y
-        //Need Dak's vector X and current position methods
+        getTargetVector( currentPosition , pointToMoveTo );
+        //Step two -- get angle Theta and rotate to angle theta
+        angleTheta = getAngle(currentVector, targetVector);
+        Rotate(angleTheta);
+        //Step three -- Call drive method to move to point
+        Drive(North,(int)magnitude(targetVector));
+}
 
-        //Step two get angle Theta needed to rotate
-
+    public Vector getTargetVector(Tuple currentPosition, Tuple targetPosition) {
+        Vector targetVector = new Vector( (targetPosition.x-currentPosition.x),(targetPosition.y-currentPosition.y) );
+        return targetVector;
     }
+
+    public double dotProduct(Vector currentVector, Vector targetVector) {
+        return ( (currentVector.x*targetVector.x) + (currentVector.y+targetVector.y) );
+    }
+    public double magnitude(Vector targetVector) {
+       return Math.sqrt( Math.pow( (targetVector.x-currentPosition.x) , (2) ) + Math.pow( (targetVector.y-currentPosition.y) ) );
+    }
+    public double getAngle(Vector currentVector, Vector targetVector) {
+        return Math.acos( (dotProduct(currentVector,targetVector)) / (magnitude(currentVector)*magnitude(targetVector)) );
+    }
+
 
 
 }
