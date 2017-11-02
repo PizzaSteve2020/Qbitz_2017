@@ -135,7 +135,5 @@ public class Robot {
     public double getAngle(Vector currentVector, Vector targetVector) {
         return Math.acos( (dotProduct(currentVector,targetVector)) / (magnitude(currentVector)*magnitude(targetVector)) );
     }
-
-
-
+    
 }
