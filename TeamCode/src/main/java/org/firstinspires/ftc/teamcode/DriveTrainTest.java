@@ -43,13 +43,13 @@ public class DriveTrainTest extends LinearOpMode {
     }
 
     private void strafe() {
-        if(gamepad1.left_bumper==true) {
+        if(gamepad1.right_bumper==true) {
             frontLeft.setPower(-1);
             frontRight.setPower(1);
             backLeft.setPower(1);
             backRight.setPower(-1);
         }
-        if(gamepad1.right_bumper==true) {
+        if(gamepad1.left_bumper==true) {
             frontLeft.setPower(1);
             frontRight.setPower(-1);
             backLeft.setPower(-1);
