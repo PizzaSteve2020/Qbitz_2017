@@ -21,7 +21,7 @@ public class DriveTrainTest extends LinearOpMode {
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
         frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
