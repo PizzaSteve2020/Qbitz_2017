@@ -1,23 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
+import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 
 import static org.firstinspires.ftc.teamcode.MechDriveDirections.North;
 
 public class Robot {
-
-    private Position position = new Position(DistanceUnit.CM, 0, 0, 1, System.nanoTime());
-    private VectorF direction = new VectorF(0,1);
-
     private final DcMotor frontLeft;
     private final DcMotor frontRight;
     private final DcMotor backLeft;
     private final DcMotor backRight;
+
+    BNO055IMU imu;
 
     private final double wheelCircumference = 10.16*Math.PI;
 
@@ -33,6 +33,8 @@ public class Robot {
         frontRight.setDirection(DcMotor.Direction.REVERSE);
         backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight.setDirection(DcMotor.Direction.REVERSE);
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
     }
 
     public void drive(MechDriveDirections direction, int centimeters) {
@@ -104,23 +106,30 @@ public class Robot {
     }
 
     public void moveToPoint(Position pointToMoveTo) {
-        //Step one get -- vector Y
-        VectorF targetVector = getTargetVector( position , pointToMoveTo );
+        //Step one get -- current Vector and target Vector
+        VectorF currentVector = getCurrentVector();
+        VectorF targetVector = getTargetVector( imu.getPosition(), pointToMoveTo );
+
         //Step two -- get angle Theta and rotate to angle theta
-        double angleTheta = getAngle(direction, targetVector);
+        double angleTheta = getAngle(currentVector, targetVector);
         rotate(angleTheta);
+
         //Step three -- Call drive method to move to point
         drive(North,(int)targetVector.magnitude());
-}
+    }
+
+    private VectorF getCurrentVector(){
+        Quaternion orientation = imu.getQuaternionOrientation();
+        VectorF currentVector = new VectorF(orientation.x,orientation.y);
+        return currentVector;
+    }
 
     private VectorF getTargetVector(Position currentPosition, Position targetPosition) {
         VectorF targetVector = new VectorF( (float)(targetPosition.x-currentPosition.x),(float)(targetPosition.y-currentPosition.y) );
         return targetVector;
     }
 
-
     private double getAngle(VectorF currentVector, VectorF targetVector) {
         return Math.acos( currentVector.dotProduct(targetVector) / currentVector.magnitude()*targetVector.magnitude() );
     }
-    
 }
