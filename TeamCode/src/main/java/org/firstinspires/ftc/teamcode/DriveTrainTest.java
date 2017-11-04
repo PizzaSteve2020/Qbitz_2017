@@ -12,6 +12,7 @@ public class DriveTrainTest extends LinearOpMode {
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
+
     @Override
     public void runOpMode() {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
@@ -23,14 +24,64 @@ public class DriveTrainTest extends LinearOpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
+        waitForStart();
 
-    waitForStart();
-    while(opModeIsActive()) {
-        driveVertical();
-        strafe();
+        while (opModeIsActive()) {
+            fullCircleStrafe(gamepad1.left_stick_x,gamepad1.left_stick_y);
+        }
     }
-    }
+    private void fullCircleStrafe(double gamepadX, double gamepadY) {
 
+        double angleOffOfYaxisDegrees = (Math.acos(gamepadX))*(180/Math.PI);
+        double angleOffOfYaxisPlusFourtyFive = angleOffOfYaxisDegrees + 45;
+        double gamepadXValuePlusFourtyFive = Math.cos(angleOffOfYaxisPlusFourtyFive);
+        double gamepadYValuePlusFourtyFive = Math.sin(angleOffOfYaxisPlusFourtyFive);
+
+        double powerA; // frontLeft and backRight motors
+        double powerB; // frontRight and backLeft motors
+        //Quadrant 1
+        if((gamepadX >= 0) && (gamepadY >= 0)) {
+            powerA = gamepadXValuePlusFourtyFive;
+            powerB = gamepadYValuePlusFourtyFive;
+
+            frontLeft.setPower(powerA);
+            backRight.setPower(powerA);
+            frontRight.setPower(powerB);
+            backLeft.setPower(powerB);
+        }
+        //Quadrant 2
+        if((gamepadX >= 0) && (gamepadY <= 0)) {
+            powerA = gamepadXValuePlusFourtyFive;
+            powerB = -gamepadYValuePlusFourtyFive;
+
+            frontLeft.setPower(powerA);
+            backRight.setPower(powerA);
+            frontRight.setPower(powerB);
+            backLeft.setPower(powerB);
+        }
+        //Quadrant 3
+        if((gamepadX < 0) && (gamepadY > 0)) {
+            powerA = gamepadXValuePlusFourtyFive;
+            powerB = gamepadYValuePlusFourtyFive;
+
+            frontLeft.setPower(powerA);
+            backRight.setPower(powerA);
+            frontRight.setPower(powerB);
+            backLeft.setPower(powerB);
+        }
+        //Quadrant 4
+        if((gamepadX < 0) && (gamepadY < 0)) {
+            powerA = gamepadXValuePlusFourtyFive;
+            powerB = gamepadYValuePlusFourtyFive;
+
+            frontLeft.setPower(powerA);
+            backRight.setPower(powerA);
+            frontRight.setPower(powerB);
+            backLeft.setPower(powerB);
+        }
+    }
+}
+    /*
     private void driveVertical() {
         double powerLeft = gamepad1.left_stick_y;
         double powerRight = gamepad1.right_stick_y;
@@ -54,4 +105,5 @@ public class DriveTrainTest extends LinearOpMode {
             backRight.setPower(1);
         }
     }
-}
+
+*/
