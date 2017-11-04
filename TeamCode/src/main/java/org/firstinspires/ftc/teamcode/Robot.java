@@ -4,22 +4,15 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
-
-import java.util.Vector;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 
 import static org.firstinspires.ftc.teamcode.MechDriveDirections.North;
 
-/**
- * Created by Steve on 10/24/2017.
- */
-
 public class Robot {
 
-    public Tuple currentPosition = new Tuple(x,y); //Insert current position here...?
-    public Tuple targetPosition = new Tuple(x,y); //Insert target position here...?
-
-    public Vector currentVector = new Vector(x,y); //Insert current vector here...?
-    public Vector targetVector = new Vector(getTargetVector(currentPosition, targetPosition ));
+    private Position position = new Position(DistanceUnit.CM, 0, 0, 1, System.nanoTime());
+    private VectorF direction = new VectorF(0,1);
 
     private final DcMotor frontLeft;
     private final DcMotor frontRight;
@@ -42,45 +35,45 @@ public class Robot {
         backRight.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    public void Drive(MechDriveDirections direction, int centimeters) {
+    public void drive(MechDriveDirections direction, int centimeters) {
         switch(direction) {
             case North:
                 //John insert code here
 
                 break;
             case NorthEast:
-                DriveDiagonal(centimeters, frontLeft, backRight);
+                driveDiagonal(centimeters, frontLeft, backRight);
                 break;
             case East:
                 //Mark insert code here
                 break;
             case SouthEast:
-                DriveDiagonal(-centimeters, frontRight, backLeft);
+                driveDiagonal(-centimeters, frontRight, backLeft);
                 break;
             case South:
                 //Jborn insert code here
                 break;
             case SouthWest:
-                DriveDiagonal(-centimeters, frontLeft, backRight);
+                driveDiagonal(-centimeters, frontLeft, backRight);
                 break;
             case West:
                 //Mark insert code here
                 break;
             case NorthWest:
-                DriveDiagonal(centimeters, frontRight, backLeft);
+                driveDiagonal(centimeters, frontRight, backLeft);
                 break;
         }
     }
 
-    private void DriveVertical (int centimeters){
+    private void driveVertical (int centimeters){
 
     }
 
-    private void DriveHorizontal (int centimeters){
+    private void driveHorizontal (int centimeters){
 
     }
 
-    private void DriveDiagonal (int centimeters, DcMotor motor1, DcMotor motor2){
+    private void driveDiagonal(int centimeters, DcMotor motor1, DcMotor motor2){
         //One encoder tick in setTargetPosition is equal to about 0.026 cm using our 4 inch diameter wheels
         //Our wheel circumference is about 32 centimeters
         double centimetersDividedByWheelCircumference = centimeters/wheelCircumference;
@@ -103,37 +96,31 @@ public class Robot {
         motor2.setPower(power);
     }
 
-    public void Rotate(double angle) {
+    public void rotate(double angle) {
         frontLeft.setPower(angle);
         backLeft.setPower(angle);
         frontRight.setPower(-angle);
         backRight.setPower(-angle);
     }
 
-    public void moveToPoint(Tuple pointToMoveTo) {
-        double angleTheta;
+    public void moveToPoint(Position pointToMoveTo) {
         //Step one get -- vector Y
-        getTargetVector( currentPosition , pointToMoveTo );
+        VectorF targetVector = getTargetVector( position , pointToMoveTo );
         //Step two -- get angle Theta and rotate to angle theta
-        angleTheta = getAngle(currentVector, targetVector);
-        Rotate(angleTheta);
+        double angleTheta = getAngle(direction, targetVector);
+        rotate(angleTheta);
         //Step three -- Call drive method to move to point
-        Drive(North,(int)magnitude(targetVector));
+        drive(North,(int)targetVector.magnitude());
 }
 
-    public Vector getTargetVector(Tuple currentPosition, Tuple targetPosition) {
-        Vector targetVector = new Vector( (targetPosition.x-currentPosition.x),(targetPosition.y-currentPosition.y) );
+    private VectorF getTargetVector(Position currentPosition, Position targetPosition) {
+        VectorF targetVector = new VectorF( (float)(targetPosition.x-currentPosition.x),(float)(targetPosition.y-currentPosition.y) );
         return targetVector;
     }
 
-    public double dotProduct(Vector currentVector, Vector targetVector) {
-        return ( (currentVector.x*targetVector.x) + (currentVector.y+targetVector.y) );
-    }
-    public double magnitude(Vector targetVector) {
-       return Math.sqrt( Math.pow( (targetVector.x-currentPosition.x) , (2) ) + Math.pow( (targetVector.y-currentPosition.y) ) );
-    }
-    public double getAngle(Vector currentVector, Vector targetVector) {
-        return Math.acos( (dotProduct(currentVector,targetVector)) / (magnitude(currentVector)*magnitude(targetVector)) );
+
+    private double getAngle(VectorF currentVector, VectorF targetVector) {
+        return Math.acos( currentVector.dotProduct(targetVector) / currentVector.magnitude()*targetVector.magnitude() );
     }
     
 }

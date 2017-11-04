@@ -5,9 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-/**
- * Created by Steve on 11/3/2017.
- */
+
 @TeleOp(name="DriveTrainTest", group="LinearOpMode")
 public class DriveTrainTest extends LinearOpMode {
     private DcMotor frontLeft;
