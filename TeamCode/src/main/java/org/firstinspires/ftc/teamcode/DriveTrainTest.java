@@ -40,7 +40,7 @@ public class DriveTrainTest extends LinearOpMode {
         double powerA; // frontLeft and backRight motors
         double powerB; // frontRight and backLeft motors
         //Quadrant 1
-        if((gamepadX >= 0) && (gamepadY >= 0)) {
+        if((gamepadX > 0) && (gamepadY > 0)) {
             powerA = gamepadXValuePlusFourtyFive;
             powerB = gamepadYValuePlusFourtyFive;
 
