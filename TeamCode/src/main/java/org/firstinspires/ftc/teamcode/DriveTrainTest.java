@@ -50,7 +50,7 @@ public class DriveTrainTest extends LinearOpMode {
             backLeft.setPower(powerB);
         }
         //Quadrant 2
-        if((gamepadX >= 0) && (gamepadY <= 0)) {
+        if((gamepadX > 0) && (gamepadY < 0)) {
             powerA = gamepadXValuePlusFourtyFive;
             powerB = -gamepadYValuePlusFourtyFive;
 
