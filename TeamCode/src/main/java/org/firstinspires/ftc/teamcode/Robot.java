@@ -9,6 +9,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 
+import java.util.Vector;
+
 import static org.firstinspires.ftc.teamcode.MechDriveDirections.North;
 
 public class Robot {
@@ -50,7 +52,7 @@ public class Robot {
                 //Mark insert code here
                 break;
             case SouthEast:
-                driveDiagonal(getDistanceToDrive(-centimeters), frontRight, backLeft);
+                driveDiagonal(-centimeters, frontRight, backLeft);
                 break;
             case South:
                 //Jborn insert code here
@@ -62,7 +64,7 @@ public class Robot {
                 //Mark insert code here
                 break;
             case NorthWest:
-                driveDiagonal(getDistanceToDrive(centimeters), frontRight, backLeft);
+                driveDiagonal(centimeters, frontRight, backLeft);
                 break;
         }
     }
@@ -120,12 +122,21 @@ public class Robot {
         drive(North,(int)targetVector.magnitude());
     }
 
-    private double getDistanceToDrive(int centimeters) {
+    private VectorF getDriveDiagonalFrontFightWheelVector(VectorF currentVector) {
+        VectorF frontRightWheelVector;
 
-        if (centimeters > 0) {
-            return 2 * (Math.sin(45) * Math.cos(45) * (Math.pow(-1, 2))) * (getCurrentVector().magnitude());
+        if(currentVector.magnitude()>0) {
+            return frontRightWheelVector = new VectorF(currentVector.multiplied( Math.cos(45)*Math.sin(45) * Math.pow(-1,2) *1 ) );
         } else {
-            return 2 * (Math.sin(45) * Math.cos(45) * (Math.pow(-1, 1) * (getCurrentVector().magnitude())));
+            return frontRightWheelVector = new VectorF(currentVector.multiplied(Math.cos(45)*Math.sin(45)*Math.pow(-1,4) * -1));
+        }
+    }
+    private VectorF getDriveDiagonalBackLeftWheelVector(VectorF currentVector) {
+        VectorF backLeftWheelVector;
+        if(currentVector.magnitude()>0) {
+            return backLeftWheelVector = new VectorF(currentVector.multiplied((Math.cos(45)*Math.sin(45)*Math.pow(-1,4) * 1));
+        } else {
+            return backLeftWheelVector = new VectorF(currentVector.multiplied(Math.cos(45)*Math.sin(45)*Math.pow(-1,4) * -1));
         }
     }
 
