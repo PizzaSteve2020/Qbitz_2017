@@ -38,7 +38,7 @@ public class Robot {
     }
 
     public void drive(MechDriveDirections direction, int centimeters) {
-        switch(direction) {
+        switch (direction) {
             case North:
                 //John insert code here
 
@@ -50,7 +50,7 @@ public class Robot {
                 //Mark insert code here
                 break;
             case SouthEast:
-                driveDiagonal(-centimeters, frontRight, backLeft);
+                driveDiagonal(getDistanceToDrive(-centimeters), frontRight, backLeft);
                 break;
             case South:
                 //Jborn insert code here
@@ -62,10 +62,12 @@ public class Robot {
                 //Mark insert code here
                 break;
             case NorthWest:
-                driveDiagonal(centimeters, frontRight, backLeft);
+                driveDiagonal(getDistanceToDrive(centimeters), frontRight, backLeft);
                 break;
         }
     }
+
+
 
     private void driveVertical (int centimeters){
 
@@ -75,7 +77,7 @@ public class Robot {
 
     }
 
-    private void driveDiagonal(int centimeters, DcMotor motor1, DcMotor motor2){
+    private void driveDiagonal(double centimeters, DcMotor motor1, DcMotor motor2){
         //One encoder tick in setTargetPosition is equal to about 0.026 cm using our 4 inch diameter wheels
         //Our wheel circumference is about 32 centimeters
         double centimetersDividedByWheelCircumference = centimeters/wheelCircumference;
@@ -117,6 +119,16 @@ public class Robot {
         //Step three -- Call drive method to move to point
         drive(North,(int)targetVector.magnitude());
     }
+
+    private double getDistanceToDrive(int centimeters) {
+
+        if (centimeters > 0) {
+            return 2 * (Math.sin(45) * Math.cos(45) * (Math.pow(-1, 2))) * (getCurrentVector().magnitude());
+        } else {
+            return 2 * (Math.sin(45) * Math.cos(45) * (Math.pow(-1, 1) * (getCurrentVector().magnitude())));
+        }
+    }
+
 
     private VectorF getCurrentVector(){
         Quaternion orientation = imu.getQuaternionOrientation();
