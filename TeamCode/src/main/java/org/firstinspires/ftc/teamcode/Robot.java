@@ -55,7 +55,7 @@ public class Robot {
                 driveDiagonal(-centimeters, frontRight, backLeft);
                 break;
             case South:
-                //Jborn insert code here
+                //John insert code here
                 break;
             case SouthWest:
                 driveDiagonal(-centimeters, frontLeft, backRight);
