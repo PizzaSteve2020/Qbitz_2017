@@ -27,58 +27,24 @@ public class DriveTrainTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            fullCircleStrafe(gamepad1.left_stick_x,gamepad1.left_stick_y);
+            fullCircleStrafe();
         }
     }
-    private void fullCircleStrafe(double gamepadX, double gamepadY) {
 
-        double angleOffOfYaxisDegrees = (Math.acos(gamepadX))*(180/Math.PI);
-        double angleOffOfYaxisPlusFourtyFive = angleOffOfYaxisDegrees + 45;
-        double gamepadXValuePlusFourtyFive = Math.cos(angleOffOfYaxisPlusFourtyFive);
-        double gamepadYValuePlusFourtyFive = Math.sin(angleOffOfYaxisPlusFourtyFive);
+    private void fullCircleStrafe() {
+        double radius = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
+        double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
+        double rotation = gamepad1.right_stick_x;
 
-        double powerA; // frontLeft and backRight motors
-        double powerB; // frontRight and backLeft motors
-        //Quadrant 1
-        if((gamepadX > 0) && (gamepadY > 0)) {
-            powerA = gamepadXValuePlusFourtyFive;
-            powerB = gamepadYValuePlusFourtyFive;
+        final double frontLeftPower = radius * Math.cos(robotAngle) + rotation;
+        final double frontRightPower = radius * Math.sin(robotAngle) - rotation;
+        final double backLeftPower = radius * Math.sin(robotAngle) + rotation;
+        final double backRightPower = radius * Math.cos(robotAngle) - rotation;
 
-            frontLeft.setPower(powerA);
-            backRight.setPower(powerA);
-            frontRight.setPower(powerB);
-            backLeft.setPower(powerB);
-        }
-        //Quadrant 2
-        if((gamepadX > 0) && (gamepadY < 0)) {
-            powerA = gamepadXValuePlusFourtyFive;
-            powerB = -gamepadYValuePlusFourtyFive;
-
-            frontLeft.setPower(powerA);
-            backRight.setPower(powerA);
-            frontRight.setPower(powerB);
-            backLeft.setPower(powerB);
-        }
-        //Quadrant 3
-        if((gamepadX < 0) && (gamepadY > 0)) {
-            powerA = gamepadXValuePlusFourtyFive;
-            powerB = gamepadYValuePlusFourtyFive;
-
-            frontLeft.setPower(powerA);
-            backRight.setPower(powerA);
-            frontRight.setPower(powerB);
-            backLeft.setPower(powerB);
-        }
-        //Quadrant 4
-        if((gamepadX < 0) && (gamepadY < 0)) {
-            powerA = gamepadXValuePlusFourtyFive;
-            powerB = gamepadYValuePlusFourtyFive;
-
-            frontLeft.setPower(powerA);
-            backRight.setPower(powerA);
-            frontRight.setPower(powerB);
-            backLeft.setPower(powerB);
-        }
+        frontLeft.setPower(frontLeftPower);
+        frontRight.setPower(frontRightPower);
+        backLeft.setPower(backLeftPower);
+        backRight.setPower(backRightPower);
     }
 }
     /*
