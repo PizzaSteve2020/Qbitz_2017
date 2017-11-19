@@ -41,13 +41,14 @@ public class MechDrive {
                 F4 = getWheelForce(0.25*vehicleForceVector.magnitude());
                 break;
             case NorthEast:
-
                 break;
             case East:
 
                 break;
             case SouthEast:
-
+                vehicleForceVector = new VectorF((int)Math.sqrt(2)/2,(int)-Math.sqrt(2)/2).multiplied(centimeters);
+                F2 = getWheelForce(0.5*vehicleForceVector.magnitude()).multiplied(-1);
+                F3 = getWheelForce(0.5*vehicleForceVector.magnitude()).multiplied(-1);
                 break;
             case South:
                 vehicleForceVector = new VectorF(0,-1).multiplied(centimeters);
@@ -63,7 +64,9 @@ public class MechDrive {
 
                 break;
             case NorthWest:
-
+                vehicleForceVector = new VectorF((int)-Math.sqrt(2)/2,(int)Math.sqrt(2)/2).multiplied(centimeters);
+                F2 = getWheelForce(0.5*vehicleForceVector.magnitude());
+                F3 = getWheelForce(0.5*vehicleForceVector.magnitude());
                 break;
         }
     }
