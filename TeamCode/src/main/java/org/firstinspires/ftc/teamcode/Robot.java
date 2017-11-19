@@ -40,6 +40,12 @@ public class Robot {
     }
 
     public void drive(MechDriveDirections direction, int centimeters) {
+        VectorF wheelForceVector;
+        VectorF frontLeftVector;
+        VectorF frontRightVector;
+        VectorF backLeftVector;
+        VectorF backRightVector;
+
         switch (direction) {
             case North:
                 //John insert code here
@@ -52,7 +58,14 @@ public class Robot {
                 //Mark insert code here
                 break;
             case SouthEast:
-                driveDiagonal(-centimeters, frontRight, backLeft);
+
+                wheelForceVector = new VectorF(0,-1).multiplied(centimeters);
+
+                frontLeftVector = getWheelForce(0.25*wheelForceVector.magnitude()).multiplied(-1);
+                frontRightVector = getWheelForce(0.25*wheelForceVector.magnitude()).multiplied(-1);
+                backLeftVector = getWheelForce(0.25*wheelForceVector.magnitude()).multiplied(-1);
+                backRightVector = getWheelForce(0.25*wheelForceVector.magnitude()).multiplied(-1);
+
                 break;
             case South:
                 //John insert code here
@@ -64,7 +77,13 @@ public class Robot {
                 //Mark insert code here
                 break;
             case NorthWest:
-                driveDiagonal(centimeters, frontRight, backLeft);
+                wheelForceVector = new VectorF(0,1).multiplied(centimeters);
+
+                frontLeftVector = getWheelForce(0.25*wheelForceVector.magnitude());
+                frontRightVector = getWheelForce(0.25*wheelForceVector.magnitude());
+                backLeftVector = getWheelForce(0.25*wheelForceVector.magnitude());
+                backRightVector = getWheelForce(0.25*wheelForceVector.magnitude());
+
                 break;
         }
     }
@@ -122,24 +141,10 @@ public class Robot {
         drive(North,(int)targetVector.magnitude());
     }
 
-    private VectorF getDriveDiagonalFrontFightWheelVector(VectorF currentVector) {
-        VectorF frontRightWheelVector;
-
-        if(currentVector.magnitude()>0) {
-            return frontRightWheelVector = new VectorF(currentVector.multiplied( Math.cos(45)*Math.sin(45) * Math.pow(-1,2) *1 ) );
-        } else {
-            return frontRightWheelVector = new VectorF(currentVector.multiplied(Math.cos(45)*Math.sin(45)*Math.pow(-1,4) * -1));
-        }
+    public VectorF getWheelForce(double parallelForceMagnitude){
+        VectorF wheelForce = new VectorF(0, (float) (parallelForceMagnitude/Math.sin(45)));
+        return wheelForce;
     }
-    private VectorF getDriveDiagonalBackLeftWheelVector(VectorF currentVector) {
-        VectorF backLeftWheelVector;
-        if(currentVector.magnitude()>0) {
-            return backLeftWheelVector = new VectorF(currentVector.multiplied((Math.cos(45)*Math.sin(45)*Math.pow(-1,4) * 1));
-        } else {
-            return backLeftWheelVector = new VectorF(currentVector.multiplied(Math.cos(45)*Math.sin(45)*Math.pow(-1,4) * -1));
-        }
-    }
-
 
     private VectorF getCurrentVector(){
         Quaternion orientation = imu.getQuaternionOrientation();
