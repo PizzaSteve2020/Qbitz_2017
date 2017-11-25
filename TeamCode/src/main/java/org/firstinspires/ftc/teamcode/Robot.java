@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import static org.firstinspires.ftc.teamcode.MechDriveDirections.North;
@@ -20,7 +21,7 @@ public class Robot {
     VuforiaLocalizer vuforia;
 
 
-    private final double wheelCircumference = 10.16*Math.PI;
+    private final double wheelCircumference = 10.16 * Math.PI;
 
     private final int encoderTicks = 1220;
 
@@ -34,45 +35,42 @@ public class Robot {
         // parameters.vuforiaLicenseKey();
     }
 
-    public void drive(MechDriveDirections direction, float centimeters) {
-       mechDrive.drive(direction,centimeters);
+    public void drive(MechDriveDirections direction, double time) {
+        mechDrive.drive(direction, time);
     }
 
 
-       public void moveToPoint(Position pointToMoveTo) {
-        //Step one get -- current Vector and target Vector
-        VectorF currentVector = getCurrentVector();
-        VectorF targetVector = getTargetVector( percepts.getPosition(), pointToMoveTo );
+    public void moveToPoint(Position pointToMoveTo) {
+        double threshold = 3;
+        double deltaT = 0.1;
+        while ((percepts.getPosition().x > pointToMoveTo.x + threshold ||
+                percepts.getPosition().x < pointToMoveTo.x - threshold) &&
+                (percepts.getPosition().y > pointToMoveTo.y + threshold ||
+                        percepts.getPosition().y < pointToMoveTo.y - threshold)) {
+            VectorF trajectory =
+                    new VectorF(
+                            (float) (pointToMoveTo.x - percepts.getPosition().x),
+                            (float) (pointToMoveTo.y - percepts.getPosition().y));
+            Velocity targetVelocity = getTargetVelocity(trajectory.magnitude());
+            Velocity deltaV =
+                    new Velocity(DistanceUnit.CM,
+                            targetVelocity.xVeloc - percepts.getVelocity().xVeloc,
+                            targetVelocity.yVeloc - percepts.getVelocity().yVeloc,
+                            (double) 0, (long) 0);
 
-        //Step two -- get angle Theta and rotate to angle theta
-        double angleTheta = getAngle(currentVector, targetVector);
-        mechDrive.rotate(angleTheta);
+            if (deltaV.yVeloc < 0)
+                drive(MechDriveDirections.South, deltaT);
+            else
+                drive(MechDriveDirections.North, deltaT);
 
-        //Step three -- Call drive method to move to point
-        drive(North,(int)targetVector.magnitude());
+            if (deltaV.xVeloc < 0)
+                drive(MechDriveDirections.West, deltaT);
+            else
+                drive(MechDriveDirections.East, deltaT);
+        }
     }
 
-    public VectorF getWheelForce(double parallelForceMagnitude){
-        VectorF wheelForce = new VectorF(0, (float) (parallelForceMagnitude/Math.sin(45)));
-        return wheelForce;
-    }
-
-    private VectorF getCurrentVector(){
-        Quaternion orientation = percepts.getOrientation();
-        VectorF currentVector = new VectorF(orientation.x,orientation.y);
-        return currentVector;
-    }
-
-    private VectorF getTargetVector(Position currentPosition, Position targetPosition) {
-        VectorF targetVector = new VectorF( (float)(targetPosition.x-currentPosition.x),(float)(targetPosition.y-currentPosition.y) );
-        return targetVector;
-    }
-
-    private double getAngle(VectorF currentVector, VectorF targetVector) {
-        return Math.acos( currentVector.dotProduct(targetVector) / currentVector.magnitude()*targetVector.magnitude() );
-    }
-
-    private RelicRecoveryVuMark getObject() {
-        return RelicRecoveryVuMark.CENTER;
+    private Velocity getTargetVelocity(float magnitutde) {
+        return null;
     }
 }

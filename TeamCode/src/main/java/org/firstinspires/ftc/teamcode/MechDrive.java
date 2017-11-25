@@ -25,56 +25,43 @@ public class MechDrive {
         backRight.setDirection(DcMotor.Direction.REVERSE);
     }
 
-    public void drive(MechDriveDirections direction, float centimeters) {
+    public void drive(MechDriveDirections direction, double time) {
         VectorF vehicleForceVector;
-        VectorF F1;
-        VectorF F2;
-        VectorF F3;
-        VectorF F4;
+        VectorF wheelForceVector;
+
 
         switch (direction) {
             case North:
-                vehicleForceVector = new VectorF(0,1).multiplied(centimeters);
-                F1 = getWheelForce(0.25*vehicleForceVector.magnitude());
-                F2 = getWheelForce(0.25*vehicleForceVector.magnitude());
-                F3 = getWheelForce(0.25*vehicleForceVector.magnitude());
-                F4 = getWheelForce(0.25*vehicleForceVector.magnitude());
+                vehicleForceVector = new VectorF(0,1);
+                wheelForceVector = getWheelForce(0.25*vehicleForceVector.magnitude());
                 break;
             case NorthEast:
+                vehicleForceVector = new VectorF((int)-Math.sqrt(2)/2,(int)Math.sqrt(2)/2);
+                wheelForceVector = getWheelForce(0.5*vehicleForceVector.magnitude());
                 break;
             case East:
-                vehicleForceVector = new VectorF(1,0).multiplied(centimeters);
-                F1 = getWheelForce(0.25*vehicleForceVector.magnitude());
-                F2 = getWheelForce(0.25*vehicleForceVector.magnitude());
-                F3 = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
-                F4 = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
+                vehicleForceVector = new VectorF(1,0);
+                wheelForceVector = getWheelForce(0.25*vehicleForceVector.magnitude());
                 break;
             case SouthEast:
-                vehicleForceVector = new VectorF((int)Math.sqrt(2)/2,(int)-Math.sqrt(2)/2).multiplied(centimeters);
-                F2 = getWheelForce(0.5*vehicleForceVector.magnitude()).multiplied(-1);
-                F3 = getWheelForce(0.5*vehicleForceVector.magnitude()).multiplied(-1);
+                vehicleForceVector = new VectorF((int)Math.sqrt(2)/2,(int)-Math.sqrt(2)/2);
+                wheelForceVector = getWheelForce(0.5*vehicleForceVector.magnitude()).multiplied(-1);
                 break;
             case South:
-                vehicleForceVector = new VectorF(0,-1).multiplied(centimeters);
-                F1 = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
-                F2 = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
-                F3 = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
-                F4 = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
+                vehicleForceVector = new VectorF(0,-1);
+                wheelForceVector = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
                 break;
             case SouthWest:
-
+                vehicleForceVector = new VectorF((int)Math.sqrt(2)/2,(int)-Math.sqrt(2)/2);
+                wheelForceVector = getWheelForce(0.5*vehicleForceVector.magnitude()).multiplied(-1);
                 break;
             case West:
-                vehicleForceVector = new VectorF(-1,0).multiplied(centimeters);
-                F1 = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
-                F2 = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
-                F3 = getWheelForce(0.25*vehicleForceVector.magnitude());
-                F4 = getWheelForce(0.25*vehicleForceVector.magnitude());
+                vehicleForceVector = new VectorF(-1,0);
+                wheelForceVector = getWheelForce(0.25*vehicleForceVector.magnitude()).multiplied(-1);
                 break;
             case NorthWest:
-                vehicleForceVector = new VectorF((int)-Math.sqrt(2)/2,(int)Math.sqrt(2)/2).multiplied(centimeters);
-                F2 = getWheelForce(0.5*vehicleForceVector.magnitude());
-                F3 = getWheelForce(0.5*vehicleForceVector.magnitude());
+                vehicleForceVector = new VectorF((int)-Math.sqrt(2)/2,(int)Math.sqrt(2)/2);
+                wheelForceVector = getWheelForce(0.5*vehicleForceVector.magnitude());
                 break;
         }
     }
