@@ -58,6 +58,7 @@ public class TeleOpMode extends LinearOpMode {
 
         while (opModeIsActive()) {
             fullCircleStrafe();
+            glyphGripper();
         }
     }
         private void fullCircleStrafe() {
@@ -77,6 +78,7 @@ public class TeleOpMode extends LinearOpMode {
     }
 
         private void glyphGripper() {
+
             if (gripper1IsBottom == true) {
                 if (gamepad1.right_bumper)
                     clawOffset += CLAW_SPEED;
@@ -86,6 +88,7 @@ public class TeleOpMode extends LinearOpMode {
                 clawOffset = Range.clip(clawOffset, -0.5, 0.5);
                 gripper1.setPosition(MID_SERVO + clawOffset);
             }
+
             else {
                 if (gamepad1.right_bumper)
                     clawOffset += CLAW_SPEED;
@@ -95,6 +98,11 @@ public class TeleOpMode extends LinearOpMode {
                 clawOffset = Range.clip(clawOffset, -0.5, 0.5);
                 gripper2.setPosition(MID_SERVO + clawOffset);
             }
+
+            if(gamepad1.left_trigger>0.3) {
+                rotateGripper180();
+                gripper1IsBottom = false;
+            }
         }
         private void rotateGripper180() {
             glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -102,6 +110,7 @@ public class TeleOpMode extends LinearOpMode {
             glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             glyphRotator.setTargetPosition(610);
+
             glyphRotator.setPower(0.5);
         }
 
