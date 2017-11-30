@@ -4,6 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
+
+import static org.firstinspires.ftc.teamcode.Servo_test.MID_SERVO;
 
 
 @TeleOp(name="DriveTrainTest", group="LinearOpMode")
@@ -12,6 +16,10 @@ public class DriveTrainTest extends LinearOpMode {
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
+    double clawOffset = 0;
+    final double CLAW_SPEED = 0.02;
+    public Servo servo = null;
+    public final double MID_SERVO = 0.5;
 
     @Override
     public void runOpMode() {
@@ -23,6 +31,7 @@ public class DriveTrainTest extends LinearOpMode {
         backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        servo = hardwareMap.get(Servo.class, "servo");
 
         waitForStart();
 
@@ -45,6 +54,16 @@ public class DriveTrainTest extends LinearOpMode {
         frontRight.setPower(frontRightPower);
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
+
+        if (gamepad1.right_bumper)
+            clawOffset += CLAW_SPEED;
+        else if (gamepad1.left_bumper)
+            clawOffset -= CLAW_SPEED;
+
+        // Move both servos to new position.  Assume servos are mirror image of each other.
+        clawOffset = Range.clip(clawOffset, -0.5, 0.5);
+        servo.setPosition(MID_SERVO + clawOffset);
+
     }
 }
     /*
