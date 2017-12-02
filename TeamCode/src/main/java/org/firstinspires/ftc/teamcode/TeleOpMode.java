@@ -108,22 +108,30 @@ public class TeleOpMode extends LinearOpMode {
             if (gripper1IsBottom == true) {
                 glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-                glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
                 glyphRotator.setTargetPosition(610);
 
+                glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
                 glyphRotator.setPower(0.5);
+
+                while(glyphRotator.isBusy()) {
+
+                }
 
                 gripper1IsBottom = !gripper1IsBottom;
             }
             if (gripper1IsBottom == false) {
                 glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+                glyphRotator.setTargetPosition(-610);
+
                 glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                glyphRotator.setTargetPosition(610);
+                glyphRotator.setPower(-0.5);
 
-                glyphRotator.setPower(0.5);
+                while(glyphRotator.isBusy()) {
+
+                }
 
                 gripper1IsBottom = !gripper1IsBottom;
             }
