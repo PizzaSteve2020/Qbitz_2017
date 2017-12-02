@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
@@ -108,7 +109,7 @@ public class TeleOpMode extends LinearOpMode {
             if (gripper1IsBottom == true) {
                 glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-                glyphRotator.setTargetPosition(610);
+                glyphRotator.setTargetPosition(560);
 
                 glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -123,7 +124,7 @@ public class TeleOpMode extends LinearOpMode {
             if (gripper1IsBottom == false) {
                 glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-                glyphRotator.setTargetPosition(-610);
+                glyphRotator.setTargetPosition(-560);
 
                 glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
