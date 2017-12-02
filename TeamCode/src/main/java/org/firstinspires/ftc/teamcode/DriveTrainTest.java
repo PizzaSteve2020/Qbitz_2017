@@ -16,33 +16,46 @@ public class DriveTrainTest extends LinearOpMode {
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
-    double clawOffset = 0;
-    final double CLAW_SPEED = 0.02;
-    public Servo servo = null;
-    public final double MID_SERVO = 0.5;
+    private DcMotor glyphRotator;
+
+    private double clawOffset = 0;
+    private final double CLAW_SPEED = 0.02;
+    private final double MID_SERVO = 0.5;
+
+    private Servo gripper1 = null;
+    private Servo gripper2 = null;
+    private Servo jewelDisplacer = null;
+
+    private boolean gripper1isBottom = true;
+
 
     @Override
     public void runOpMode() {
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
         backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        backLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+        backLeft.setDirection(DcMotor.Direction.FORWARD);
         backRight = hardwareMap.get(DcMotor.class, "backRight");
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        servo = hardwareMap.get(Servo.class, "servo");
+        backRight.setDirection(DcMotor.Direction.REVERSE);
+        glyphRotator = hardwareMap.get(DcMotor.class, "glyphRotator");
+
+        gripper1 = hardwareMap.get(Servo.class, "gripper1");
+        gripper2 = hardwareMap.get(Servo.class, "gripper2");
+        jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
 
         waitForStart();
 
         while (opModeIsActive()) {
             fullCircleStrafe();
+            glyphGripper();
         }
     }
 
     private void fullCircleStrafe() {
         double radius = Math.hypot(gamepad1.left_stick_x, gamepad1.left_stick_y);
-        double robotAngle = Math.atan2(gamepad1.left_stick_y, gamepad1.left_stick_x) - Math.PI / 4;
+        double robotAngle = Math.atan2(gamepad1.left_stick_x, gamepad1.left_stick_y) - Math.PI / 4;
         double rotation = gamepad1.right_stick_x;
 
         final double frontLeftPower = radius * Math.cos(robotAngle) + rotation;
@@ -55,14 +68,23 @@ public class DriveTrainTest extends LinearOpMode {
         backLeft.setPower(backLeftPower);
         backRight.setPower(backRightPower);
 
-        if (gamepad1.right_bumper)
-            clawOffset += CLAW_SPEED;
-        else if (gamepad1.left_bumper)
-            clawOffset -= CLAW_SPEED;
 
-        // Move both servos to new position.  Assume servos are mirror image of each other.
-        clawOffset = Range.clip(clawOffset, -0.5, 0.5);
-        servo.setPosition(MID_SERVO + clawOffset);
+    }
+
+    private void glyphGripper() {
+        if (gripper1isBottom == true) {
+            if (gamepad1.right_bumper)
+                clawOffset += CLAW_SPEED;
+            else if (gamepad1.left_bumper) {
+                clawOffset -= CLAW_SPEED;
+            }
+
+            clawOffset = Range.clip(clawOffset, -0.5, 0.5);
+            gripper1.setPosition(MID_SERVO + clawOffset);
+            // Move both servos to new position.  Assume servos are mirror image of each other.
+
+
+        }
 
     }
 }

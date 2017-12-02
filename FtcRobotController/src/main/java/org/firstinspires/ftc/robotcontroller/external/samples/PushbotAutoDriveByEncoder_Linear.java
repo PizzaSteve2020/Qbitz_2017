@@ -112,6 +112,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
         encoderDrive(TURN_SPEED,   12, -12, 4.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
         encoderDrive(DRIVE_SPEED, -24, -24, 4.0);  // S3: Reverse 24 Inches with 4 Sec timeout
 
+
         robot.leftClaw.setPosition(1.0);            // S4: Stop and close the claw.
         robot.rightClaw.setPosition(0.0);
         sleep(1000);     // pause for servos to move
@@ -140,6 +141,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
             // Determine new target position, and pass to motor controller
             newLeftTarget = robot.leftDrive.getCurrentPosition() + (int)(leftInches * COUNTS_PER_INCH);
             newRightTarget = robot.rightDrive.getCurrentPosition() + (int)(rightInches * COUNTS_PER_INCH);
+
             robot.leftDrive.setTargetPosition(newLeftTarget);
             robot.rightDrive.setTargetPosition(newRightTarget);
 
@@ -158,7 +160,8 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
-            while (opModeIsActive() &&
+            /*
+           while (opModeIsActive() &&
                    (runtime.seconds() < timeoutS) &&
                    (robot.leftDrive.isBusy() && robot.rightDrive.isBusy())) {
 
@@ -169,6 +172,7 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
                                             robot.rightDrive.getCurrentPosition());
                 telemetry.update();
             }
+            */
 
             // Stop all motion;
             robot.leftDrive.setPower(0);
@@ -180,5 +184,6 @@ public class PushbotAutoDriveByEncoder_Linear extends LinearOpMode {
 
             //  sleep(250);   // optional pause after each move
         }
+
     }
 }

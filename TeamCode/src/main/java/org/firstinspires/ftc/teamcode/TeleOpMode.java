@@ -21,7 +21,7 @@ public class TeleOpMode extends LinearOpMode {
 
     private Servo gripper1 = null;
     private Servo gripper2 = null;
-    private Servo jewelDisplacer = null;
+    //private Servo jewelDisplacer = null;
 
     private double clawOffset = 0;
     private final double CLAW_SPEED = 0.02;
@@ -51,7 +51,7 @@ public class TeleOpMode extends LinearOpMode {
 
         gripper1 = hardwareMap.get(Servo.class, "gripper1");
         gripper2 = hardwareMap.get(Servo.class, "gripper2");
-        jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
+       // jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
 
 
         waitForStart();
@@ -101,18 +101,32 @@ public class TeleOpMode extends LinearOpMode {
 
             if(gamepad1.left_trigger>0.3) {
                 rotateGripper180();
-                gripper1IsBottom = false;
+
             }
         }
         private void rotateGripper180() {
-            glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            if (gripper1IsBottom == true) {
+                glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            glyphRotator.setTargetPosition(610);
+                glyphRotator.setTargetPosition(610);
 
-            glyphRotator.setPower(0.5);
+                glyphRotator.setPower(0.5);
+
+                gripper1IsBottom = !gripper1IsBottom;
+            }
+            if (gripper1IsBottom == false) {
+                glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+                glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+                glyphRotator.setTargetPosition(610);
+
+                glyphRotator.setPower(0.5);
+
+                gripper1IsBottom = !gripper1IsBottom;
+            }
         }
-
 }
 
