@@ -61,7 +61,8 @@ public class TeleOpMode extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-
+            gripper1.scaleRange(0.3,0.7);
+            gripper2.scaleRange(0.3,0.7);
             fullCircleStrafe();
             glyphGripper1();
             glyphGripper2();

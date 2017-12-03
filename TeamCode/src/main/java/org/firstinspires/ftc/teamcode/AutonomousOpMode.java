@@ -75,8 +75,7 @@ public class AutonomousOpMode extends LinearOpMode {
 
 
             encoderDrive(DRIVE_SPEED, 30, 30, 1.0);
-            //jewelDisplacer.setPosition(0.5);
-            //extendDisplacerArm();
+
             getColorAndDisplace();
 
 

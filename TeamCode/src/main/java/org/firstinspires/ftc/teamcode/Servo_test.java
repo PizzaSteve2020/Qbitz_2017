@@ -43,15 +43,20 @@ public class Servo_test extends LinearOpMode {
 
     private void rotate180() {
 
-        if (gamepad1.a && counter == true) {
+            if (gamepad1.left_bumper && counter == true) {
+                servo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            servo.setTargetPosition(1220);
+                servo.setTargetPosition(560);
 
-            servo.setPower(0.7);
+                servo.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            servo.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-           counter = false;
-        }
+                servo.setPower(0.5);
+
+                while(servo.isBusy()) {
+
+                }
+
+            }
 
     }
 
