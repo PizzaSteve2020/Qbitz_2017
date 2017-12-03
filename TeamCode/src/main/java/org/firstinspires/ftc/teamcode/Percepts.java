@@ -32,7 +32,7 @@ public class Percepts {
         colorSensor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
         distanceSensor = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
     }
-
+//get color
     public Colors getColor(){
         int hue = colorSensor.argb();
         if(hue >= 350 || hue <= 5)

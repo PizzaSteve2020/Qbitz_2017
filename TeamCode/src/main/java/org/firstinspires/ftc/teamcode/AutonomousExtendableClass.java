@@ -11,20 +11,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by Steve on 12/1/2017.
  */
 @Autonomous(name ="AutonomousOpMode", group="LinearOpMode")
-public class AutonomousOpMode extends LinearOpMode {
-    private DcMotor frontLeft = null;
-    private DcMotor frontRight = null;
-    private DcMotor backLeft = null;
-    private DcMotor backRight = null;
+public class AutonomousExtendableClass extends LinearOpMode{
+    protected DcMotor frontLeft = null;
+    protected DcMotor frontRight = null;
+    protected DcMotor backLeft = null;
+    protected DcMotor backRight = null;
 
-     private DcMotor glyphRotator = null;
-    private DcMotor linearSlide = null;
-    private Servo gripper1 = null;
-    private Servo gripper2 = null;
-    private Servo jewelDisplacer = null;
+    protected DcMotor glyphRotator = null;
+    protected DcMotor linearSlide = null;
+    protected Servo gripper1 = null;
+    protected Servo gripper2 = null;
+    protected Servo jewelDisplacer = null;
 
-    private ColorSensor colorSensor = null;
-
+    protected ColorSensor colorSensor = null;
     private ElapsedTime runtime = new ElapsedTime();
 
     static final double COUNTS_PER_MOTOR_REV = 1120;
@@ -37,54 +36,11 @@ public class AutonomousOpMode extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
-        frontLeft.setDirection(DcMotor.Direction.REVERSE);
-
-        frontRight = hardwareMap.get(DcMotor.class, "frontRight");
-        frontRight.setDirection(DcMotor.Direction.FORWARD);
-
-        backLeft = hardwareMap.get(DcMotor.class, "backLeft");
-        backLeft.setDirection(DcMotor.Direction.REVERSE);
-
-        backRight = hardwareMap.get(DcMotor.class, "backRight");
-        backRight.setDirection(DcMotor.Direction.FORWARD);
-
-        glyphRotator = hardwareMap.get(DcMotor.class, "glyphRotator");
-        glyphRotator.setDirection(DcMotor.Direction.FORWARD);
-
-        linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
-        linearSlide.setDirection(DcMotor.Direction.FORWARD);
-
-         gripper1 = hardwareMap.get(Servo.class, "gripper1");
-         gripper2 = hardwareMap.get(Servo.class, "gripper2");
-         jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
-
-         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
-
-        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
         waitForStart();
-
-
-            encoderDrive(DRIVE_SPEED, 30, 30, 1.0);
-
-            getColorAndDisplace();
-
-
-
-
 
     }
 
-    private void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
+    protected void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
         int newFrontLeftTarget;
         int newFrontRightTarget;
         int newBackLeftTarget;
@@ -151,12 +107,12 @@ public class AutonomousOpMode extends LinearOpMode {
             //  sleep(250);   // optional pause after each move
         }
     }
-    private void extendDisplacerArm() {
+    protected void extendDisplacerArm() {
         jewelDisplacer.setPosition(Servo.MAX_POSITION);
 
     }
 
-    private void getColorAndDisplace() {
+    protected void getColorAndDisplace() {
         int color = colorSensor.argb();
         if(color>=350 || color<=5) {
             encoderDrive(0.4, 3, -3, 1);
@@ -167,14 +123,14 @@ public class AutonomousOpMode extends LinearOpMode {
             encoderDrive(0.4, 3, -3, 1);
         }
     }
-    private void setGripper1(double position) {
+    protected void setGripper1(double position) {
         gripper1.setPosition(position);
 
     }
-    private void setGripper2(double position) {
+    protected void setGripper2(double position) {
         gripper2.setPosition(position);
     }
-    private void setBothGrippers(double position1, double position2) {
+    protected void setBothGrippers(double position1, double position2) {
         setGripper1(position1);
         setGripper2(position2);
     }
