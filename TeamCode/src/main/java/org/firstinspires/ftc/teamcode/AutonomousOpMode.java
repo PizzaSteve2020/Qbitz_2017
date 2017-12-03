@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -14,6 +16,15 @@ public class AutonomousOpMode extends LinearOpMode {
     private DcMotor frontRight = null;
     private DcMotor backLeft = null;
     private DcMotor backRight = null;
+
+    private DcMotor glyphRotator = null;
+    private DcMotor linearSlide = null;
+
+    private Servo gripper1 = null;
+    private Servo gripper2 = null;
+    private Servo jewelDisplacer = null;
+
+    private ColorSensor colorSensor = null;
 
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -39,6 +50,18 @@ public class AutonomousOpMode extends LinearOpMode {
         backRight = hardwareMap.get(DcMotor.class, "backRight");
         backRight.setDirection(DcMotor.Direction.FORWARD);
 
+        glyphRotator = hardwareMap.get(DcMotor.class, "glyphRotator");
+        glyphRotator.setDirection(DcMotor.Direction.FORWARD);
+
+        linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
+        linearSlide.setDirection(DcMotor.Direction.FORWARD);
+
+        gripper1 = hardwareMap.get(Servo.class, "gripper1");
+        gripper2 = hardwareMap.get(Servo.class, "gripper2");
+        jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
+
+        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+
         waitForStart();
 
         while (opModeIsActive()) {
@@ -47,7 +70,7 @@ public class AutonomousOpMode extends LinearOpMode {
         }
     }
 
-    public void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
+    private void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
         int newFrontLeftTarget;
         int newFrontRightTarget;
         int newBackLeftTarget;
@@ -74,6 +97,7 @@ public class AutonomousOpMode extends LinearOpMode {
             backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
+            runtime.reset();
             frontLeft.setPower(Math.abs(speed));
             frontRight.setPower(Math.abs(speed));
             backLeft.setPower(Math.abs(speed));
@@ -115,5 +139,29 @@ public class AutonomousOpMode extends LinearOpMode {
             //  sleep(250);   // optional pause after each move
         }
     }
+
+    private void getColorAndDisplace() {
+        int color = colorSensor.argb();
+        if(color>=350 || color<=5) {
+            encoderDrive(0.4, 3, -3, 2);
+    }
+        if(color>=180 && color <=210) {
+            encoderDrive(0.4,-3,3,2);
+        }
+    }
+    private void setGripper1(double position) {
+        gripper1.setPosition(position);
+
+    }
+    private void setGripper2(double position) {
+        gripper2.setPosition(position);
+    }
+    private void setBothGrippers(double position1, double position2) {
+        setGripper1(position1);
+        setGripper2(position2);
+    }
+
+
+
 }
 
