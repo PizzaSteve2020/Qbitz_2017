@@ -17,9 +17,8 @@ public class AutonomousOpMode extends LinearOpMode {
     private DcMotor backLeft = null;
     private DcMotor backRight = null;
 
-    private DcMotor glyphRotator = null;
+     private DcMotor glyphRotator = null;
     private DcMotor linearSlide = null;
-
     private Servo gripper1 = null;
     private Servo gripper2 = null;
     private Servo jewelDisplacer = null;
@@ -28,8 +27,8 @@ public class AutonomousOpMode extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    static final double COUNTS_PER_MOTOR_REV = 560;    // eg: TETRIX Motor Encoder
-    static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
+    static final double COUNTS_PER_MOTOR_REV = 1120;
+    static final double DRIVE_GEAR_REDUCTION = 1.5;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.1415);
     static final double DRIVE_SPEED = 1.0;
@@ -56,18 +55,34 @@ public class AutonomousOpMode extends LinearOpMode {
         linearSlide = hardwareMap.get(DcMotor.class, "linearSlide");
         linearSlide.setDirection(DcMotor.Direction.FORWARD);
 
-        gripper1 = hardwareMap.get(Servo.class, "gripper1");
-        gripper2 = hardwareMap.get(Servo.class, "gripper2");
-        jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
+         gripper1 = hardwareMap.get(Servo.class, "gripper1");
+         gripper2 = hardwareMap.get(Servo.class, "gripper2");
+         jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
 
-        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         waitForStart();
 
-        while (opModeIsActive()) {
-            encoderDrive(DRIVE_SPEED, 30, 30, 3);
 
-        }
+            encoderDrive(DRIVE_SPEED, 30, 30, 1.0);
+            //jewelDisplacer.setPosition(0.5);
+            //extendDisplacerArm();
+            getColorAndDisplace();
+
+
+
+
+
     }
 
     private void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
@@ -80,10 +95,10 @@ public class AutonomousOpMode extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFrontLeftTarget = frontLeft.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
-            newFrontRightTarget = frontRight.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
-            newBackLeftTarget = backLeft.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
-            newBackRightTarget = backRight.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
+            newFrontLeftTarget = frontLeft.getCurrentPosition() + (int) (leftInches*(10/7) * COUNTS_PER_INCH);
+            newFrontRightTarget = frontRight.getCurrentPosition() + (int) (rightInches*(10/7) * COUNTS_PER_INCH);
+            newBackLeftTarget = backLeft.getCurrentPosition() + (int) (leftInches*(10/7) * COUNTS_PER_INCH);
+            newBackRightTarget = backRight.getCurrentPosition() + (int) (rightInches*(10/7) * COUNTS_PER_INCH);
 
             frontLeft.setTargetPosition(newFrontLeftTarget);
             frontRight.setTargetPosition(newFrontRightTarget);
@@ -98,31 +113,29 @@ public class AutonomousOpMode extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
+
             frontLeft.setPower(Math.abs(speed));
             frontRight.setPower(Math.abs(speed));
             backLeft.setPower(Math.abs(speed));
             backRight.setPower(Math.abs(speed));
-            // keep looping while we are still active, and there is time left, and both motors are running.
-            // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER motor hits
+            // kneep looping while we are still active, and there is time left, and both motors are running.
+            // Note: We use (isBusy() && isBusy()) i the loop test, which means that when EITHER motor hits
             // its target position, the motion will stop.  This is "safer" in the event that the robot will
             // always end the motion as soon as possible.
             // However, if you require that BOTH motors have finished their moves before the robot continues
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
 
-           while (opModeIsActive() &&
-                   (runtime.seconds() < timeoutS) &&
-                   (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy())) {
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS) &&
+                    (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy())) {
 
                 // Display it for the driver.
-                telemetry.addData("Path1",  "Running to %7d :%7d", newFrontLeftTarget,  newFrontRightTarget, newBackLeftTarget, newBackRightTarget);
-                telemetry.addData("Path2",  "Running at %7d :%7d",
-                                            frontLeft.getCurrentPosition(),
-                                            frontRight.getCurrentPosition(),
-                                            backLeft.getCurrentPosition(),
-                                            backRight.getCurrentPosition());
+                telemetry.addData("Path1", "Running to %7d :%7d", newFrontLeftTarget, newFrontRightTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d",
+                        frontLeft.getCurrentPosition(),
+                        frontRight.getCurrentPosition());
                 telemetry.update();
             }
-
 
             // Stop all motion;
             frontLeft.setPower(0);
@@ -139,14 +152,20 @@ public class AutonomousOpMode extends LinearOpMode {
             //  sleep(250);   // optional pause after each move
         }
     }
+    private void extendDisplacerArm() {
+        jewelDisplacer.setPosition(Servo.MAX_POSITION);
+
+    }
 
     private void getColorAndDisplace() {
         int color = colorSensor.argb();
         if(color>=350 || color<=5) {
-            encoderDrive(0.4, 3, -3, 2);
+            encoderDrive(0.4, 3, -3, 1);
+            encoderDrive(0.4, -3, 3, 1);
     }
         if(color>=180 && color <=210) {
-            encoderDrive(0.4,-3,3,2);
+            encoderDrive(0.4,-3,3,1);
+            encoderDrive(0.4, 3, -3, 1);
         }
     }
     private void setGripper1(double position) {
