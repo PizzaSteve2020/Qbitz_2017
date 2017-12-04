@@ -29,6 +29,7 @@ public class TeleOpMode extends LinearOpMode {
     private double clawOffset2 = 0;
     private final double CLAW_SPEED = 0.02;
     private final double MID_SERVO = 0.5;
+    private int OneEighty = 1120/2;
 
 
     private boolean gripper1IsBottom = true;
@@ -58,16 +59,17 @@ public class TeleOpMode extends LinearOpMode {
         gripper2 = hardwareMap.get(Servo.class, "gripper2");
 
 
+
         waitForStart();
 
         while (opModeIsActive()) {
-            gripper1.scaleRange(0.3,0.7);
-            gripper2.scaleRange(0.3,0.7);
+
             fullCircleStrafe();
             glyphGripper1();
             glyphGripper2();
             moveLinearSlide();
-            rotateGripper180();
+            // rotateGripper180();
+
 
             telemetry.addData("Gripper1 Position", gripper1.getPosition());
             telemetry.addData("Gripper2 Position", gripper2.getPosition());
@@ -91,15 +93,16 @@ public class TeleOpMode extends LinearOpMode {
         frontRight.setPower(frontRightPower * 0.75);
         backLeft.setPower(backLeftPower * 0.75);
         backRight.setPower(backRightPower * 0.75);
+
     }
 
     private void glyphGripper1() {
-        gripper1.scaleRange(-0.5,0.5);
 
-        if (gamepad1.right_bumper) {
+
+        if (gamepad2.right_bumper) {
             clawOffset1 += CLAW_SPEED;
         }
-        if (gamepad1.left_bumper) {
+        if (gamepad2.left_bumper) {
             clawOffset1 -= CLAW_SPEED;
         }
         clawOffset1 = Range.clip(clawOffset1, -0.5, 0.5);
@@ -111,10 +114,9 @@ public class TeleOpMode extends LinearOpMode {
 
 
     private void glyphGripper2() {
-        gripper2.scaleRange(-0.5,0.5);
-        if (gamepad1.right_trigger>0.3)
+        if (gamepad2.right_trigger>0.3)
             clawOffset2 += CLAW_SPEED;
-        if (gamepad1.left_trigger>0.3) {
+        if (gamepad2.left_trigger>0.3) {
             clawOffset2 -= CLAW_SPEED;
         }
         clawOffset2 = Range.clip(clawOffset2, -0.5, 0.5);
@@ -123,22 +125,49 @@ public class TeleOpMode extends LinearOpMode {
 
      }
 
-
+/*
     private void rotateGripper180() {
-        if(gamepad2.right_bumper) {
-            glyphRotator.setPower(0.4);
-        }
-        if(gamepad2.left_bumper) {
-            glyphRotator.setPower(-0.4);
-        }
-        glyphRotator.setPower(0);
-    }
+        glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+            if(gamepad2.a) {
+
+                while (glyphRotator.getCurrentPosition() <= OneEighty) {
+                    glyphRotator.setTargetPosition(OneEighty);
+                    glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                    glyphRotator.setPower(.3);
+
+                }
+                glyphRotator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                glyphRotator.setPower(0);
+
+            }
+
+
+
+
+
+            if(gamepad2.b){
+                while (glyphRotator.getCurrentPosition() >= -OneEighty) {
+                          glyphRotator.setTargetPosition(-OneEighty);
+                          glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                          glyphRotator.setPower(.3);
+
+
+                      }
+                glyphRotator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                glyphRotator.setPower(0);
+
+
+            }
+
+        }
+
+*/
     private void moveLinearSlide() {
-            if(gamepad2.right_trigger>0.3) {
+            if(gamepad1.right_trigger>0.3) {
                 linearSlide.setPower(0.75);
             }
-            if(gamepad2.left_trigger>0.3) {
+            if(gamepad1.left_trigger>0.3) {
                 linearSlide.setPower(-0.75);
             }
             linearSlide.setPower(0);

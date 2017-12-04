@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 /**
  * Created by Steve on 12/3/2017.
  */
-
+@Autonomous(name="RedMid", group="AutonomousExtendableClass")
 public class RedMidPlateAutonomous extends AutonomousExtendableClass {
     @Override
     public void runOpMode() {

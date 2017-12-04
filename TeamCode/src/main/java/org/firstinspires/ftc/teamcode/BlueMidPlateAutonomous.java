@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by Steve on 12/3/2017.
  */
-
+@Autonomous(name="BlueMid", group="AutonomousExtendableClass")
 public class BlueMidPlateAutonomous extends AutonomousExtendableClass {
     @Override
     public void runOpMode() {
@@ -48,9 +48,10 @@ public class BlueMidPlateAutonomous extends AutonomousExtendableClass {
 
         waitForStart();
 
-        encoderDrive(DRIVE_SPEED,40,40,5);
-        encoderDrive(DRIVE_SPEED,12,-12,3);
-        setGripper1(0.7);
+        setGripper1(0);
+        encoderDrive(DRIVE_SPEED,36,36 ,5);
+        encoderDrive(DRIVE_SPEED,16,-16,3);
+        setGripper1(0.8);
 
     }
 }

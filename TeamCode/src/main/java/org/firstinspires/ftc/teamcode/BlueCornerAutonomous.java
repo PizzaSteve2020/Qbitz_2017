@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -7,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by Steve on 12/3/2017.
  */
-
+@Autonomous(name="BlueCorner", group="AutonomousExtendableClass")
 public class BlueCornerAutonomous extends AutonomousExtendableClass {
 
 
@@ -49,9 +50,22 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
 
         waitForStart();
 
-        encoderDrive(DRIVE_SPEED, 40 , 40 , 5 );
-        encoderDrive(TURN_SPEED, 12 , 12 , 5 );
-        setGripper1(0.7);
-        setGripper2(0.7);
+        setGripper1(1);
+        setGripper2(1);
+        encoderDrive(DRIVE_SPEED, 31, 31 , 5 );
+        encoderDrive(TURN_SPEED, -16 , 16 , 5 );
+        encoderDrive(DRIVE_SPEED, 8, 8, 5);
+
+        setGripper1(gripper1.getPosition()-0.3);
+        setGripper2(gripper2.getPosition()-0.3);
+        setGripper1(gripper1.getPosition()-0.3);
+        setGripper2(gripper2.getPosition()-0.3);
+        setGripper1(gripper1.getPosition()-0.3);
+        setGripper2(gripper2.getPosition()-0.3);
+
+
+        encoderDrive(DRIVE_SPEED, -10, -10, 5);
+
+        sleep(1000);
     }
 }
