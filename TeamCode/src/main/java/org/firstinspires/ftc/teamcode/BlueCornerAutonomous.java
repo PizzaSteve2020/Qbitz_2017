@@ -52,6 +52,7 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
 
         setGripper1(1);
         setGripper2(1);
+
         encoderDrive(DRIVE_SPEED, 31, 31 , 5 );
         encoderDrive(TURN_SPEED, -16 , 16 , 5 );
         encoderDrive(DRIVE_SPEED, 8, 8, 5);
