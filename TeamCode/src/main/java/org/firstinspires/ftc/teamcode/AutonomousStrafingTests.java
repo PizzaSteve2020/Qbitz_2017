@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class AutonomousStrafingTests extends AutonomousExtendableClass {
     @Override
     public void runOpMode() {
-        frontLeft= hardwareMap.get(DcMotor.class, "frontLeft");
+        frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
@@ -39,7 +39,8 @@ public class AutonomousStrafingTests extends AutonomousExtendableClass {
 
         waitForStart();
 
-        encoderStrafe(1.0, 72, 5);
+        encoderStrafe(.75, 36, 10);
+
 
     }
 }

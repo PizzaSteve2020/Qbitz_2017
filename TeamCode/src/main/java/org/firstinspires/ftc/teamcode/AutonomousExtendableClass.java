@@ -38,6 +38,12 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
 
 
     }
+    protected void resetEncoders() {
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 
     protected void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
         int newFrontLeftTarget;
@@ -81,7 +87,7 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
 
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy())) {
+                    (frontLeft.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1", "Running to %7d :%7d", newFrontLeftTarget, newFrontRightTarget);
@@ -108,6 +114,9 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
     }
 
     protected void encoderStrafe(double speed, double inchesRight, double timeoutS) {
+
+        resetEncoders();
+
         int newFrontLeftTarget;
         int newFrontRightTarget;
         int newBackLeftTarget;
@@ -117,10 +126,10 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFrontLeftTarget = frontLeft.getCurrentPosition() + (int) (0.5*inchesRight*(10/3) * COUNTS_PER_INCH);
-            newFrontRightTarget = frontRight.getCurrentPosition() + (int) (0.5*inchesRight*(10/3) * COUNTS_PER_INCH);
-            newBackLeftTarget = backLeft.getCurrentPosition() + (int) (0.5*inchesRight*(10/3) * COUNTS_PER_INCH);
-            newBackRightTarget = backRight.getCurrentPosition() + (int) (0.5*inchesRight*(10/3) * COUNTS_PER_INCH);
+            newFrontLeftTarget = frontLeft.getCurrentPosition() + (int) (0.5*inchesRight* COUNTS_PER_INCH);
+            newFrontRightTarget = frontRight.getCurrentPosition() + (int) (0.5*inchesRight * COUNTS_PER_INCH);
+            newBackLeftTarget = backLeft.getCurrentPosition() + (int) (0.5*inchesRight* COUNTS_PER_INCH);
+            newBackRightTarget = backRight.getCurrentPosition() + (int) (0.5*inchesRight* COUNTS_PER_INCH);
 
             frontLeft.setTargetPosition(newFrontLeftTarget);
             frontRight.setTargetPosition(-newFrontRightTarget);
@@ -136,9 +145,9 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
 
-            frontLeft.setPower(Math.abs(speed));
-            frontRight.setPower(Math.abs(-speed));
-            backLeft.setPower(Math.abs(-speed));
+            frontLeft.setPower(Math.abs(1.15 * speed));
+            frontRight.setPower(Math.abs(1.15 *speed));
+            backLeft.setPower(Math.abs(speed));
             backRight.setPower(Math.abs(speed));
             // kneep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) i the loop test, which means that when EITHER motor hits
@@ -149,7 +158,7 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
 
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (frontLeft.isBusy() && frontRight.isBusy() && backLeft.isBusy() && backRight.isBusy())) {
+                    (frontLeft.isBusy())) {
 
                 // Display it for the driver.
                 telemetry.addData("Path1", "Running to %7d :%7d", newFrontLeftTarget, newFrontRightTarget);
@@ -287,22 +296,24 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
     }
 
     protected void extendDisplacerArm() {
-        jewelDisplacer.setPosition(Servo.MAX_POSITION);
+        jewelDisplacer.setPosition(0.5);
 
     }
 
     protected void getColorAndDisplace() {
         extendDisplacerArm();
+        sleep(500);
         int color = colorSensor.argb();
         if(color>=350 || color<=5) {
             encoderDrive(0.4, 3, -3, 1);
             encoderDrive(0.4, -3, 3, 1);
-    }
+        }
         if(color>=180 && color <=210) {
             encoderDrive(0.4,-3, 3,1);
             encoderDrive(0.4, 3, -3, 1);
         }
     }
+
     protected void setGripper1(double position) {
         gripper1.setPosition(position);
 

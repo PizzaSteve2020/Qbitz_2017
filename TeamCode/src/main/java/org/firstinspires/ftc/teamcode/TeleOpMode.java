@@ -84,16 +84,20 @@ public class TeleOpMode extends LinearOpMode {
         double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
         double rotation = gamepad1.right_stick_x / 2;
 
-        final double frontLeftPower = radius * Math.cos(robotAngle) - rotation;
-        final double frontRightPower = radius * Math.sin(robotAngle) + rotation;
-        final double backLeftPower = radius * Math.sin(robotAngle) - rotation;
-        final double backRightPower = radius * Math.cos(robotAngle) + rotation;
+        final double frontLeftPower = radius * Math.cos(robotAngle);
+        final double frontRightPower = radius * Math.sin(robotAngle);
+        final double backLeftPower = radius * Math.sin(robotAngle);
+        final double backRightPower = radius * Math.cos(robotAngle);
 
         frontLeft.setPower(frontLeftPower * 0.75);
         frontRight.setPower(frontRightPower * 0.75);
         backLeft.setPower(backLeftPower * 0.75);
         backRight.setPower(backRightPower * 0.75);
 
+        telemetry.addData("FL_Power",frontLeftPower );
+        telemetry.addData("FR_Power",frontRightPower );
+        telemetry.addData("BL_Power",backLeftPower );
+        telemetry.addData("BR_Power",backRightPower  );
     }
 
     private void glyphGripper1() {
