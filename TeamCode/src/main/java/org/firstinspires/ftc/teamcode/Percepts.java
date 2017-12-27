@@ -29,8 +29,8 @@ public class Percepts {
 
     public void initialize(HardwareMap hardwareMap){
         //imu = hardwareMap.get(BNO055IMU.class, "imu");
-        colorSensor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
-        distanceSensor = hardwareMap.get(DistanceSensor.class, "sensor_color_distance");
+        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "colorSensor");
     }
 //get color
     public Colors getColor(){
@@ -40,6 +40,10 @@ public class Percepts {
         if(hue >= 180 && hue <= 210)
             return Colors.Blue;
         return Colors.Unknown;
+    }
+
+    public int getHue(){
+        return colorSensor.argb();
     }
 
     public double getDistance(){

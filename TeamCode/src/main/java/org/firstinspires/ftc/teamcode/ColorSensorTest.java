@@ -19,6 +19,7 @@ public class ColorSensorTest extends LinearOpMode {
                             color == Colors.Red ? "Red" : "Unknown";
 
             telemetry.addData("Color: ", txt);
+            telemetry.addData("Hue:", percepts.getHue());
 
             telemetry.update();
         }

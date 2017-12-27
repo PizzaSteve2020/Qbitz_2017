@@ -39,7 +39,7 @@ public class AutonomousStrafingTests extends AutonomousExtendableClass {
 
         waitForStart();
 
-        encoderStrafe(.75, 36, 10);
+
 
 
     }

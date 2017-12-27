@@ -84,10 +84,10 @@ public class TeleOpMode extends LinearOpMode {
         double robotAngle = Math.atan2(gamepad1.left_stick_y, -gamepad1.left_stick_x) - Math.PI / 4;
         double rotation = gamepad1.right_stick_x / 2;
 
-        final double frontLeftPower = radius * Math.cos(robotAngle);
-        final double frontRightPower = radius * Math.sin(robotAngle);
-        final double backLeftPower = radius * Math.sin(robotAngle);
-        final double backRightPower = radius * Math.cos(robotAngle);
+        final double frontLeftPower = radius * Math.cos(robotAngle) - rotation;
+        final double frontRightPower = radius * Math.sin(robotAngle)+ rotation;
+        final double backLeftPower = radius * Math.sin(robotAngle) - rotation;
+        final double backRightPower = radius * Math.cos(robotAngle) + rotation;
 
         frontLeft.setPower(frontLeftPower * 0.75);
         frontRight.setPower(frontRightPower * 0.75);
