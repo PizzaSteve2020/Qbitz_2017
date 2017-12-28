@@ -6,9 +6,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-/**
- * Created by Steve on 12/6/2017.
- */
 @Autonomous(name = "Autonomous Strafing Test", group = "AutonomousExtendableClass")
 public class AutonomousStrafingTests extends AutonomousExtendableClass {
     @Override
