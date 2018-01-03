@@ -55,10 +55,10 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFrontLeftTarget = frontLeft.getCurrentPosition() + (int) (0.5*leftInches*(10/7) * COUNTS_PER_INCH);
-            newFrontRightTarget = frontRight.getCurrentPosition() + (int) (0.5*rightInches*(10/7) * COUNTS_PER_INCH);
-            newBackLeftTarget = backLeft.getCurrentPosition() + (int) (0.5*leftInches*(10/7) * COUNTS_PER_INCH);
-            newBackRightTarget = backRight.getCurrentPosition() + (int) (0.5*rightInches*(10/7) * COUNTS_PER_INCH);
+            newFrontLeftTarget = frontLeft.getCurrentPosition() + (int) (0.5*leftInches*(10/7)*0.8674 * COUNTS_PER_INCH);
+            newFrontRightTarget = frontRight.getCurrentPosition() + (int) (0.5*rightInches*(10/7)*0.8674 * COUNTS_PER_INCH);
+            newBackLeftTarget = backLeft.getCurrentPosition() + (int) (0.5*leftInches*(10/7)*0.8674 * COUNTS_PER_INCH);
+            newBackRightTarget = backRight.getCurrentPosition() + (int) (0.5*rightInches*(10/7)*0.8674 * COUNTS_PER_INCH);
 
             frontLeft.setTargetPosition(newFrontLeftTarget);
             frontRight.setTargetPosition(newFrontRightTarget);
@@ -296,22 +296,25 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
     }
 
     protected void extendDisplacerArm() {
-        jewelDisplacer.setPosition(0.5);
+        jewelDisplacer.setPosition(1);
 
+    }
+    protected void retractDisplacerArm() {
+        jewelDisplacer.setPosition(0);
     }
 
     protected void getColorAndDisplace() {
         extendDisplacerArm();
         sleep(500);
-        int color = colorSensor.argb();
-        if(color>=350 || color<=5) {
+
+        if(colorSensor.red()<0) {
             encoderDrive(0.4, 3, -3, 1);
-            encoderDrive(0.4, -3, 3, 1);
-        }
-        if(color>=180 && color <=210) {
+            encoderDrive(0.4, -2, 2, 1);
+        }{
             encoderDrive(0.4,-3, 3,1);
             encoderDrive(0.4, 3, -3, 1);
         }
+        retractDisplacerArm();
     }
 
     protected void setGripper1(double position) {

@@ -35,9 +35,9 @@ public class AutonomousStrafingTests extends AutonomousExtendableClass {
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
 
         waitForStart();
-
-
-
-
+        while(opModeIsActive()) {
+            telemetry.addData("color", colorSensor.red());
+            telemetry.update();
+        }
     }
 }
