@@ -46,6 +46,7 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
     }
 
     protected void encoderDrive(double speed, double leftInches, double rightInches, double timeoutS) {
+        resetEncoders();
         int newFrontLeftTarget;
         int newFrontRightTarget;
         int newBackLeftTarget;
@@ -55,10 +56,10 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
-            newFrontLeftTarget = frontLeft.getCurrentPosition() + (int) (0.5*leftInches*(10/7)*0.8674 * COUNTS_PER_INCH);
-            newFrontRightTarget = frontRight.getCurrentPosition() + (int) (0.5*rightInches*(10/7)*0.8674 * COUNTS_PER_INCH);
-            newBackLeftTarget = backLeft.getCurrentPosition() + (int) (0.5*leftInches*(10/7)*0.8674 * COUNTS_PER_INCH);
-            newBackRightTarget = backRight.getCurrentPosition() + (int) (0.5*rightInches*(10/7)*0.8674 * COUNTS_PER_INCH);
+            newFrontLeftTarget = frontLeft.getCurrentPosition() + (int) (0.5*leftInches*(10/7) * COUNTS_PER_INCH);
+            newFrontRightTarget = frontRight.getCurrentPosition() + (int) (0.5*rightInches*(10/7) * COUNTS_PER_INCH);
+            newBackLeftTarget = backLeft.getCurrentPosition() + (int) (0.5*leftInches*(10/7) * COUNTS_PER_INCH);
+            newBackRightTarget = backRight.getCurrentPosition() + (int) (0.5*rightInches*(10/7) * COUNTS_PER_INCH);
 
             frontLeft.setTargetPosition(newFrontLeftTarget);
             frontRight.setTargetPosition(newFrontRightTarget);
