@@ -80,6 +80,8 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
             encoderDrive(1, -10, -10, 5);
 
             sleep(1000);
+
+            //This is on Github now :)
         }
     }
 
