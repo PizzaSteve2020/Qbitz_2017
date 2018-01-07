@@ -28,9 +28,9 @@ public class Percepts {
     private Percepts(){ }
 
     public void initialize(HardwareMap hardwareMap){
-        //imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
-        distanceSensor = hardwareMap.get(DistanceSensor.class, "colorSensor");
+       distanceSensor = hardwareMap.get(DistanceSensor.class, "colorSensor ");
     }
 //get color
     public Colors getColor(){
@@ -45,10 +45,19 @@ public class Percepts {
     public int getHue(){
         return colorSensor.argb();
     }
+    public int getAlpha(){
+        return colorSensor.alpha();
+    }
+    public int getRed(){
+        return colorSensor.red();
+    }
+
+
 
     public double getDistance(){
         double distance = distanceSensor.getDistance(DistanceUnit.CM);
         return distance;
+
     }
 
     public Acceleration getAcceleration(){

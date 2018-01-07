@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
-import static org.firstinspires.ftc.teamcode.Servo_test.MID_SERVO;
 
 
 @TeleOp(name="DriveTrainTest", group="LinearOpMode")
@@ -25,6 +27,7 @@ public class DriveTrainTest extends LinearOpMode {
     private Servo gripper1 = null;
     private Servo gripper2 = null;
     private Servo jewelDisplacer = null;
+    private ColorSensor sensorColor = null;
 
     private boolean gripper1isBottom = true;
 
@@ -41,10 +44,11 @@ public class DriveTrainTest extends LinearOpMode {
         backRight.setDirection(DcMotor.Direction.REVERSE);
         glyphRotator = hardwareMap.get(DcMotor.class, "glyphRotator");
 
+
         gripper1 = hardwareMap.get(Servo.class, "gripper1");
         gripper2 = hardwareMap.get(Servo.class, "gripper2");
         jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
-
+        sensorColor = hardwareMap.get(ColorSensor.class, "colorSensor");
         waitForStart();
 
         while (opModeIsActive()) {
