@@ -91,3 +91,4 @@ public class RedMidPlateAutonomous extends AutonomousExtendableClass {
         setGripper1(0.7);
     }
 }
+//comment

@@ -17,7 +17,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @Autonomous(name="RedCorner", group="AutonomousExtendableClass")
 public class RedCornerAutonomous extends AutonomousExtendableClass {
     VuforiaLocalizer vuforia;
-    private boolean scanningTemplate = true;
 
     @Override
     public void runOpMode() {
@@ -71,31 +70,33 @@ public class RedCornerAutonomous extends AutonomousExtendableClass {
 
         relicTrackables.activate();
 
-        while (scanningTemplate == true) {
-            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        while(opModeIsActive()) {
+            RelicRecoveryVuMark vuMark =  RelicRecoveryVuMark.from(relicTemplate);
 
-            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+            if(vuMark!=RelicRecoveryVuMark.UNKNOWN) {
 
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 telemetry.update();
 
-                switch (vuMark) {
+                switch(vuMark) {
                     case LEFT:
-
-                        scanningTemplate = false;
+                        encoderDrive(1,30,0,5);
                         break;
-
                     case CENTER:
-
-                        scanningTemplate = false;
+                        encoderDrive(1,30,30,5);
                         break;
-
                     case RIGHT:
-                        
-                        scanningTemplate = false;
+                        encoderDrive(1,0,30,5);
                         break;
+
 
                 }
+
+            }
+
+
+
+        }
 
                 setGripper1(1);
                 setGripper2(1);

@@ -60,27 +60,27 @@ public class Vuforia extends AutonomousExtendableClass {
 
 
 
-        while(opModeIsActive()) {
-            RelicRecoveryVuMark vuMark =  RelicRecoveryVuMark.from(relicTemplate);
+                   while(opModeIsActive()) {
+                RelicRecoveryVuMark vuMark =  RelicRecoveryVuMark.from(relicTemplate);
 
-            if(vuMark!=RelicRecoveryVuMark.UNKNOWN) {
+                if(vuMark!=RelicRecoveryVuMark.UNKNOWN) {
 
-                telemetry.addData("VuMark", "%s visible", vuMark);
-                telemetry.update();
+                    telemetry.addData("VuMark", "%s visible", vuMark);
+                    telemetry.update();
 
-                switch(vuMark) {
-                    case LEFT:
-                        encoderDrive(1,30,0,5);
-                        break;
-                    case CENTER:
-                        encoderDrive(1,30,30,5);
-                        break;
-                    case RIGHT:
-                        encoderDrive(1,0,30,5);
-                        break;
+                    switch(vuMark) {
+                        case LEFT:
+                            encoderDrive(1,30,0,5);
+                            break;
+                        case CENTER:
+                            encoderDrive(1,30,30,5);
+                            break;
+                        case RIGHT:
+                            encoderDrive(1,0,30,5);
+                            break;
 
 
-                }
+                    }
 
                 }
 

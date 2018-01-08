@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 public class BlueCornerAutonomous extends AutonomousExtendableClass {
 
     private VuforiaLocalizer vuforia;
-    private boolean scanningTemplate = false;
+
 
     @Override
     public void runOpMode() {
@@ -58,12 +58,50 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
         backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        parameters.vuforiaLicenseKey="ATy+Mon/////AAAAmdO7ijESrEYksmtbbrhsJ0h8pd0hCk5Vcp0EgfFUzSv7qvMD+pVBK+McXiTjFO/nc1jCMers6XjWglIGEGM+2nQ62R4An/KtVZYx8pcAJvoMNsgmr/IjFu1kZX+X2cWrplyV9eHUgaL+IcWzVzzKUG0vHzffzcLeMzEWs3mafEs9geCmYuyIjEzhiqLdQHL2gYjrMNSbA5K4iFjlU6Gxka0sR4Q2/YtR1RDVGPjo+4Dv+m7/4cthw32VEb8Mw0+xiRWcAKdDZO2Tf7CKFr5T7h5abyv8il+Dw5vN61kkqChalpel/ebyj2sQf3Ag09Z2b/PRVtOmwIYwp4s5k/TkWdbc95RvS10IM8bOVlLUaGim";
+        parameters.cameraDirection= VuforiaLocalizer.CameraDirection.BACK;
+
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate");
+
         waitForStart();
 
         setGripper1(1);
         setGripper2(1);
-        scanningTemplate = true;
 
+        while(opModeIsActive()) {
+            RelicRecoveryVuMark vuMark =  RelicRecoveryVuMark.from(relicTemplate);
+
+            if(vuMark!=RelicRecoveryVuMark.UNKNOWN) {
+
+                telemetry.addData("VuMark", "%s visible", vuMark);
+                telemetry.update();
+
+                switch(vuMark) {
+                    case LEFT:
+                        encoderDrive(1,30,0,5);
+                        break;
+                    case CENTER:
+                        encoderDrive(1,30,30,5);
+                        break;
+                    case RIGHT:
+                        encoderDrive(1,0,30,5);
+                        break;
+
+
+                }
+
+            }
+
+
+
+        }
 
             encoderDrive(1, 31, 31, 5);
             encoderDrive(1, -16, 16, 5);
