@@ -74,7 +74,7 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
 
         setGripper1(1);
         setGripper2(1);
-        
+
         encoderDrive(1, 31, 31, 5);
         encoderDrive(1, -16, 16, 5);
         encoderDrive(1, 8, 8, 5);
@@ -90,7 +90,7 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
         encoderDrive(1, -10, -10, 5);
 
         sleep(1000);
-
+/*
         while(opModeIsActive()) {
             RelicRecoveryVuMark vuMark =  RelicRecoveryVuMark.from(relicTemplate);
 
@@ -120,7 +120,7 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
 
         }
 
-
+*/
 
             //This is on Github now :)
         }
