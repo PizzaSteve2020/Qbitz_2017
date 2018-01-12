@@ -80,13 +80,64 @@ public class RedCornerAutonomous extends AutonomousExtendableClass {
 
                 switch(vuMark) {
                     case LEFT:
-                        encoderDrive(1,30,0,5);
+                        setGripper1(1);
+                        setGripper2(1);
+
+                        encoderDrive(1, 24.1, 24.1, 5);
+                        encoderDrive(1, -16, 16, 5);
+                        encoderDrive(1, 8, 8, 5);
+
+                        setGripper1(gripper1.getPosition() - 0.3);
+                        setGripper2(gripper2.getPosition() - 0.3);
+                        setGripper1(gripper1.getPosition() - 0.3);
+                        setGripper2(gripper2.getPosition() - 0.3);
+                        setGripper1(gripper1.getPosition() - 0.3);
+                        setGripper2(gripper2.getPosition() - 0.3);
+
+
+                        encoderDrive(1, -10, -10, 5);
+
+                        sleep(10000);
                         break;
                     case CENTER:
-                        encoderDrive(1,30,30,5);
+                        setGripper1(1);
+                        setGripper2(1);
+
+                        encoderDrive(1, 31, 31, 5);
+                        encoderDrive(1, -16, 16, 5);
+                        encoderDrive(1, 8, 8, 5);
+
+                        setGripper1(gripper1.getPosition() - 0.3);
+                        setGripper2(gripper2.getPosition() - 0.3);
+                        setGripper1(gripper1.getPosition() - 0.3);
+                        setGripper2(gripper2.getPosition() - 0.3);
+                        setGripper1(gripper1.getPosition() - 0.3);
+                        setGripper2(gripper2.getPosition() - 0.3);
+
+
+                        encoderDrive(1, -10, -10, 5);
+
+                        sleep(10000);
                         break;
                     case RIGHT:
-                        encoderDrive(1,0,30,5);
+                        setGripper1(1);
+                        setGripper2(1);
+
+                        encoderDrive(1, 37.9, 37.9, 5);
+                        encoderDrive(1, -16, 16, 5);
+                        encoderDrive(1, 8, 8, 5);
+
+                        setGripper1(gripper1.getPosition() - 0.3);
+                        setGripper2(gripper2.getPosition() - 0.3);
+                        setGripper1(gripper1.getPosition() - 0.3);
+                        setGripper2(gripper2.getPosition() - 0.3);
+                        setGripper1(gripper1.getPosition() - 0.3);
+                        setGripper2(gripper2.getPosition() - 0.3);
+
+
+                        encoderDrive(1, -5, -5, 5);
+
+                        sleep(10000);
                         break;
 
 
@@ -116,5 +167,4 @@ public class RedCornerAutonomous extends AutonomousExtendableClass {
                 sleep(1000);
             }
         }
-    }
-}
+

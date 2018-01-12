@@ -309,11 +309,9 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
         sleep(500);
 
         if(colorSensor.red()<0) {
-            encoderDrive(0.4, 3, -3, 1);
-            encoderDrive(0.4, -2, 2, 1);
+
         }{
-            encoderDrive(0.4,-3, 3,1);
-            encoderDrive(0.4, 3, -3, 1);
+
         }
         retractDisplacerArm();
     }
