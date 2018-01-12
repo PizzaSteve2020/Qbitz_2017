@@ -15,12 +15,7 @@ public class ColorSensorTest extends LinearOpMode {
         percepts.initialize(hardwareMap);
         waitForStart();
         while(opModeIsActive()){
-            Colors color = percepts.getColor();
-            String txt =
-                    color == Colors.Blue ? "Blue" :
-                            color == Colors.Red ? "Red" : "Unknown";
 
-            telemetry.addData("Color", txt);
             telemetry.addData("Hue", percepts.getHue());
             telemetry.addData("Alpha", percepts.getAlpha());
             telemetry.addData("Red", percepts.getRed());
