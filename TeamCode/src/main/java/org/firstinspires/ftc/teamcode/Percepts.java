@@ -45,9 +45,11 @@ public class Percepts {
     public int getHue(){
         return colorSensor.argb();
     }
+
     public int getAlpha(){
         return colorSensor.alpha();
     }
+
     public int getRed(){
         return colorSensor.red();
     }
