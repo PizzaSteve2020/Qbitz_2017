@@ -68,6 +68,21 @@ public class RedCornerAutonomous extends AutonomousExtendableClass {
 
         waitForStart();
 
+       // extendDisplacerArm();
+       // sleep(1500);
+        /*
+        if(colorSensor.red()>60) {
+            encoderDrive(0.5,-5,5,10);
+            encoderDrive(0.5,5,-5,10);
+        } else {
+            encoderDrive(0.5,5,-5,10);
+            encoderDrive(0.5,-5,5,10);
+        }
+        jewelDisplacer.setPosition(jewelDisplacer.getPortNumber()-0.3);
+        jewelDisplacer.setPosition(jewelDisplacer.getPortNumber()-0.3);
+        jewelDisplacer.setPosition(jewelDisplacer.getPortNumber()-0.3);
+        jewelDisplacer.setPosition(jewelDisplacer.getPortNumber()-0.3);
+*/
         relicTrackables.activate();
 
         while(opModeIsActive()) {
@@ -162,7 +177,7 @@ public class RedCornerAutonomous extends AutonomousExtendableClass {
                 setGripper1(gripper1.getPosition() - 0.3);
                 setGripper2(gripper2.getPosition() - 0.3);
 
-                encoderDrive(DRIVE_SPEED, -10, -10, 5);
+                encoderDrive(DRIVE_SPEED, -8, -8, 5);
 
                 sleep(1000);
             }

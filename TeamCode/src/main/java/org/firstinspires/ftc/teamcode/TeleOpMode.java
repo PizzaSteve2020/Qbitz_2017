@@ -23,6 +23,7 @@ public class TeleOpMode extends LinearOpMode {
 
     private Servo gripper1 = null;
     private Servo gripper2 = null;
+    private Servo pushDownPlate = null;
 
 
     private double clawOffset1 = 0;
@@ -57,7 +58,7 @@ public class TeleOpMode extends LinearOpMode {
 
         gripper1 = hardwareMap.get(Servo.class, "gripper1");
         gripper2 = hardwareMap.get(Servo.class, "gripper2");
-
+        pushDownPlate = hardwareMap.get(Servo.class, "plate");
 
 
         waitForStart();
@@ -69,6 +70,7 @@ public class TeleOpMode extends LinearOpMode {
             glyphGripper2();
             moveLinearSlide();
             // rotateGripper180();
+            pushThePlatformDown();
 
 
             telemetry.addData("Gripper1 Position", gripper1.getPosition());
@@ -177,5 +179,16 @@ public class TeleOpMode extends LinearOpMode {
             linearSlide.setPower(0);
 
         }
+    private void pushThePlatformDown() {
+        if(gamepad1.a) {
+            pushDownPlate.setPosition(1);
+
+        }
+        if(gamepad1.b) {
+            pushDownPlate.setPosition(pushDownPlate.getPosition()-0.3);
+            pushDownPlate.setPosition(pushDownPlate.getPosition()-0.3);
+            pushDownPlate.setPosition(pushDownPlate.getPosition()-0.3);
+        }
+    }
 }
 //

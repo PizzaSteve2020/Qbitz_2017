@@ -20,7 +20,7 @@ public class Vuforia extends AutonomousExtendableClass {
 
     @Override
     public void runOpMode() {
-        frontLeft= hardwareMap.get(DcMotor.class, "frontLeft");
+      /*  frontLeft= hardwareMap.get(DcMotor.class, "frontLeft");
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         frontRight = hardwareMap.get(DcMotor.class, "frontRight");
@@ -41,7 +41,7 @@ public class Vuforia extends AutonomousExtendableClass {
         gripper1 = hardwareMap.get(Servo.class, "gripper1");
         gripper2 = hardwareMap.get(Servo.class, "gripper2");
         jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
-
+*/
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
@@ -62,25 +62,13 @@ public class Vuforia extends AutonomousExtendableClass {
 
                    while(opModeIsActive()) {
                 RelicRecoveryVuMark vuMark =  RelicRecoveryVuMark.from(relicTemplate);
-
+                       telemetry.addData("VuMark", "%s visible", vuMark);
+                       telemetry.update();
                 if(vuMark!=RelicRecoveryVuMark.UNKNOWN) {
 
-                    telemetry.addData("VuMark", "%s visible", vuMark);
-                    telemetry.update();
-
-                    switch(vuMark) {
-                        case LEFT:
-                            encoderDrive(1,30,0,5);
-                            break;
-                        case CENTER:
-                            encoderDrive(1,30,30,5);
-                            break;
-                        case RIGHT:
-                            encoderDrive(1,0,30,5);
-                            break;
 
 
-                    }
+
 
                 }
 

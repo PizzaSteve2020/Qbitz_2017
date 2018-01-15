@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 @Autonomous(name="RedMid", group="AutonomousExtendableClass")
 public class RedMidPlateAutonomous extends AutonomousExtendableClass {
     VuforiaLocalizer vuforia;
+    private ElapsedTime runtime = new ElapsedTime();
     @Override
     public void runOpMode() {
 
@@ -57,24 +59,39 @@ public class RedMidPlateAutonomous extends AutonomousExtendableClass {
         relicTemplate.setName("relicVuMarkTemplate");
 
         waitForStart();
-
+        /*
+        extendDisplacerArm();
+        if(colorSensor.red()>40) {
+            encoderDrive(0.5,-5,5,10);
+            encoderDrive(0.5,5,-5,10);
+        } else {
+            encoderDrive(0.5,5,-5,10);
+            encoderDrive(0.5,-5,5,10);
+        }
+        jewelDisplacer.setPosition(jewelDisplacer.getPortNumber()-0.3);
+        jewelDisplacer.setPosition(jewelDisplacer.getPortNumber()-0.3);
+        jewelDisplacer.setPosition(jewelDisplacer.getPortNumber()-0.3);
+        jewelDisplacer.setPosition(jewelDisplacer.getPortNumber()-0.3);
+*/
+        relicTrackables.activate();
+        runtime.reset();
         while(opModeIsActive()) {
             RelicRecoveryVuMark vuMark =  RelicRecoveryVuMark.from(relicTemplate);
-
-            if(vuMark!=RelicRecoveryVuMark.UNKNOWN) {
+        if(runtime.seconds()<10) {
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
                 telemetry.addData("VuMark", "%s visible", vuMark);
                 telemetry.update();
 
-                switch(vuMark) {
+                switch (vuMark) {
                     case LEFT:
-                        encoderDrive(1,30,0,5);
+                        encoderDrive(1, 30, 0, 5);
                         break;
                     case CENTER:
-                        encoderDrive(1,30,30,5);
+                        encoderDrive(1, 30, 30, 5);
                         break;
                     case RIGHT:
-                        encoderDrive(1,0,30,5);
+                        encoderDrive(1, 0, 30, 5);
                         break;
 
 
@@ -82,13 +99,34 @@ public class RedMidPlateAutonomous extends AutonomousExtendableClass {
 
             }
 
+        } else {
+            setGripper1(1);
+            setGripper2(1);
+
+            encoderDrive(1, 25, 25, 5);
+            encoderDrive(1, -16, 16, 5);
+            encoderDrive(1, 11, 11, 5);
+            encoderDrive(1,16,-16,5);
+            encoderDrive(1,12,12,5);
+
+
+            setGripper1(gripper1.getPosition() - 0.3);
+            setGripper2(gripper2.getPosition() - 0.3);
+            setGripper1(gripper1.getPosition() - 0.3);
+            setGripper2(gripper2.getPosition() - 0.3);
+            setGripper1(gripper1.getPosition() - 0.3);
+            setGripper2(gripper2.getPosition() - 0.3);
+
+
+            encoderDrive(1, -8, -8, 5);
+
+            sleep(30000); // till end of autonomous period
+        }
+
 
 
         }
 
-        encoderDrive(DRIVE_SPEED,40,40,5);
-        encoderDrive(DRIVE_SPEED,12,-12,3);
-        setGripper1(0.7);
     }
 }
 //comment
