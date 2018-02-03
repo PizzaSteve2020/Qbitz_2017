@@ -20,17 +20,19 @@ public class TeleOpMode extends LinearOpMode {
     private DcMotor backRight = null;
     private DcMotor glyphRotator = null;
     private DcMotor linearSlide = null;
+    private DcMotor slideForward = null;
 
     private Servo gripper1 = null;
     private Servo gripper2 = null;
-    private Servo pushDownPlate = null;
+    private Servo pushDownPlate1 = null;
+    private Servo pushDownPlate2 = null;
 
 
     private double clawOffset1 = 0;
     private double clawOffset2 = 0;
     private final double CLAW_SPEED = 0.02;
     private final double MID_SERVO = 0.5;
-    private int OneEighty = 1120/2;
+    private int oneEighty = 1120/2;
 
 
     private boolean gripper1IsBottom = true;
@@ -58,8 +60,10 @@ public class TeleOpMode extends LinearOpMode {
 
         gripper1 = hardwareMap.get(Servo.class, "gripper1");
         gripper2 = hardwareMap.get(Servo.class, "gripper2");
-        pushDownPlate = hardwareMap.get(Servo.class, "plate");
+        pushDownPlate1 = hardwareMap.get(Servo.class, "plate1");
+        pushDownPlate2 = hardwareMap.get(Servo.class, "plate2");
 
+        slideForward = hardwareMap.get(DcMotor.class, "slideForward");
 
         waitForStart();
 
@@ -69,9 +73,9 @@ public class TeleOpMode extends LinearOpMode {
             glyphGripper1();
             glyphGripper2();
             moveLinearSlide();
-            // rotateGripper180();
+            rotateGripper180();
             pushThePlatformDown();
-
+            slideForward();
 
             telemetry.addData("Gripper1 Position", gripper1.getPosition());
             telemetry.addData("Gripper2 Position", gripper2.getPosition());
@@ -102,6 +106,11 @@ public class TeleOpMode extends LinearOpMode {
         telemetry.addData("BR_Power",backRightPower  );
     }
 
+    private void slideForward() {
+        if(gamepad2.y) {
+            slideForward.setPower(0.1);
+        }
+    }
     private void glyphGripper1() {
 
 
@@ -131,44 +140,22 @@ public class TeleOpMode extends LinearOpMode {
 
      }
 
-/*
+
     private void rotateGripper180() {
         glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            if(gamepad2.a) {
+        if(gamepad2.a) {
+            glyphRotator.setTargetPosition(oneEighty);
+            glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            glyphRotator.setPower(0.3);
 
-                while (glyphRotator.getCurrentPosition() <= OneEighty) {
-                    glyphRotator.setTargetPosition(OneEighty);
-                    glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    glyphRotator.setPower(.3);
-
-                }
-                glyphRotator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                glyphRotator.setPower(0);
-
-            }
-
-
-
-
-
-            if(gamepad2.b){
-                while (glyphRotator.getCurrentPosition() >= -OneEighty) {
-                          glyphRotator.setTargetPosition(-OneEighty);
-                          glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                          glyphRotator.setPower(.3);
-
-
-                      }
-                glyphRotator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-                glyphRotator.setPower(0);
-
-
-            }
+            glyphRotator.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            glyphRotator.setPower(0);
 
         }
+        }
 
-*/
+
     private void moveLinearSlide() {
             if(gamepad1.right_trigger>0.3) {
                 linearSlide.setPower(0.75);
@@ -181,13 +168,17 @@ public class TeleOpMode extends LinearOpMode {
         }
     private void pushThePlatformDown() {
         if(gamepad1.a) {
-            pushDownPlate.setPosition(1);
+            pushDownPlate1.setPosition(1);
+            pushDownPlate2.setPosition(0);
 
         }
         if(gamepad1.b) {
-            pushDownPlate.setPosition(pushDownPlate.getPosition()-0.3);
-            pushDownPlate.setPosition(pushDownPlate.getPosition()-0.3);
-            pushDownPlate.setPosition(pushDownPlate.getPosition()-0.3);
+            pushDownPlate1.setPosition(pushDownPlate1.getPosition()-0.3);
+            pushDownPlate1.setPosition(pushDownPlate1.getPosition()-0.3);
+            pushDownPlate1.setPosition(pushDownPlate1.getPosition()-0.3);
+            pushDownPlate2.setPosition(pushDownPlate1.getPosition()+0.3);
+            pushDownPlate2.setPosition(pushDownPlate1.getPosition()+0.3);
+            pushDownPlate2.setPosition(pushDownPlate1.getPosition()+0.3);
         }
     }
 }

@@ -18,10 +18,13 @@ public class ColorSensorPleaseWork extends AutonomousExtendableClass {
 
         waitForStart();
         while(opModeIsActive()) {
+            /*
             telemetry.addData("Hue", percepts.getHue());
             telemetry.addData("alpha", percepts.getAlpha());
             telemetry.addData("Color", percepts.getColor());
-
+*/
+            telemetry.addData("Red", colorSensor.red());
+            telemetry.addData("Blue",colorSensor.blue());
             telemetry.update();
         }
     }
