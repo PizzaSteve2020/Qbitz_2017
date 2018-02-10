@@ -27,15 +27,11 @@ public class TeleOpMode extends LinearOpMode {
     private Servo pushDownPlate1 = null;
     private Servo pushDownPlate2 = null;
 
-
     private double clawOffset1 = 0;
     private double clawOffset2 = 0;
     private final double CLAW_SPEED = 0.02;
     private final double MID_SERVO = 0.5;
-    private int oneEighty = 1120/2;
-
-
-    private boolean gripper1IsBottom = true;
+    private int oneEighty = 1120 / 2;
 
 
     @Override
@@ -63,22 +59,31 @@ public class TeleOpMode extends LinearOpMode {
         pushDownPlate1 = hardwareMap.get(Servo.class, "plate1");
         pushDownPlate2 = hardwareMap.get(Servo.class, "plate2");
 
+
         slideForward = hardwareMap.get(DcMotor.class, "slideForward");
 
         waitForStart();
 
         while (opModeIsActive()) {
 
-            fullCircleStrafe();
-            glyphGripper1();
-            glyphGripper2();
-            moveLinearSlide();
-            rotateGripper180();
+
+            if( gamepad2.a =true){
+
+                slideForward.setPower(.5);
+            }
+           fullCircleStrafe();
+           glyphGripper1();
+           glyphGripper2();
+           moveLinearSlide();
+
             pushThePlatformDown();
             slideForward();
 
+
             telemetry.addData("Gripper1 Position", gripper1.getPosition());
             telemetry.addData("Gripper2 Position", gripper2.getPosition());
+            telemetry.addData("bal1", pushDownPlate1.getPosition());
+            telemetry.addData("bal2", pushDownPlate2.getPosition());
             telemetry.update();
 
         }
@@ -91,7 +96,7 @@ public class TeleOpMode extends LinearOpMode {
         double rotation = gamepad1.right_stick_x / 2;
 
         final double frontLeftPower = radius * Math.cos(robotAngle) - rotation;
-        final double frontRightPower = radius * Math.sin(robotAngle)+ rotation;
+        final double frontRightPower = radius * Math.sin(robotAngle) + rotation;
         final double backLeftPower = radius * Math.sin(robotAngle) - rotation;
         final double backRightPower = radius * Math.cos(robotAngle) + rotation;
 
@@ -100,17 +105,16 @@ public class TeleOpMode extends LinearOpMode {
         backLeft.setPower(backLeftPower * 0.75);
         backRight.setPower(backRightPower * 0.75);
 
-        telemetry.addData("FL_Power",frontLeftPower );
-        telemetry.addData("FR_Power",frontRightPower );
-        telemetry.addData("BL_Power",backLeftPower );
-        telemetry.addData("BR_Power",backRightPower  );
+        telemetry.addData("FL_Power", frontLeftPower);
+        telemetry.addData("FR_Power", frontRightPower);
+        telemetry.addData("BL_Power", backLeftPower);
+        telemetry.addData("BR_Power", backRightPower);
     }
 
     private void slideForward() {
-        if(gamepad2.y) {
-            slideForward.setPower(0.1);
-        }
+
     }
+
     private void glyphGripper1() {
 
 
@@ -120,31 +124,30 @@ public class TeleOpMode extends LinearOpMode {
         if (gamepad2.left_bumper) {
             clawOffset1 -= CLAW_SPEED;
         }
-        clawOffset1 = Range.clip(clawOffset1, -0.5, 0.5);
+        clawOffset1 = Range.clip(clawOffset1, -1, 1);
         gripper1.setPosition(MID_SERVO + clawOffset1);
-
 
 
     }
 
 
     private void glyphGripper2() {
-        if (gamepad2.right_trigger>0.3)
+        if (gamepad2.right_trigger > 0.3)
             clawOffset2 += CLAW_SPEED;
-        if (gamepad2.left_trigger>0.3) {
+        if (gamepad2.left_trigger > 0.3) {
             clawOffset2 -= CLAW_SPEED;
         }
-        clawOffset2 = Range.clip(clawOffset2, -0.5, 0.5);
+        clawOffset2 = Range.clip(clawOffset2, -1, 1);
         gripper2.setPosition(MID_SERVO + clawOffset2);
 
 
-     }
+    }
 
 
     private void rotateGripper180() {
         glyphRotator.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        if(gamepad2.a) {
+        if (gamepad2.a) {
             glyphRotator.setTargetPosition(oneEighty);
             glyphRotator.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             glyphRotator.setPower(0.3);
@@ -153,33 +156,33 @@ public class TeleOpMode extends LinearOpMode {
             glyphRotator.setPower(0);
 
         }
-        }
+    }
 
 
     private void moveLinearSlide() {
-            if(gamepad1.right_trigger>0.3) {
-                linearSlide.setPower(0.75);
-            }
-            if(gamepad1.left_trigger>0.3) {
-                linearSlide.setPower(-0.75);
-            }
-            linearSlide.setPower(0);
-
+        if (gamepad1.right_trigger > 0.3) {
+            linearSlide.setPower(0.75);
         }
+        if (gamepad1.left_trigger > 0.3) {
+            linearSlide.setPower(-0.75);
+        }
+        linearSlide.setPower(0);
+
+    }
+
     private void pushThePlatformDown() {
-        if(gamepad1.a) {
+        if (gamepad1.a) {
             pushDownPlate1.setPosition(1);
-            pushDownPlate2.setPosition(0);
+            pushDownPlate2.setPosition(1);
 
         }
-        if(gamepad1.b) {
-            pushDownPlate1.setPosition(pushDownPlate1.getPosition()-0.3);
-            pushDownPlate1.setPosition(pushDownPlate1.getPosition()-0.3);
-            pushDownPlate1.setPosition(pushDownPlate1.getPosition()-0.3);
-            pushDownPlate2.setPosition(pushDownPlate1.getPosition()+0.3);
-            pushDownPlate2.setPosition(pushDownPlate1.getPosition()+0.3);
-            pushDownPlate2.setPosition(pushDownPlate1.getPosition()+0.3);
+        if (gamepad1.b) {
+            pushDownPlate1.setPosition(pushDownPlate1.getPosition() - 0.3);
+            pushDownPlate1.setPosition(pushDownPlate1.getPosition() - 0.3);
+            pushDownPlate1.setPosition(pushDownPlate1.getPosition() - 0.3);
+            pushDownPlate2.setPosition(pushDownPlate1.getPosition() + 0.3);
+            pushDownPlate2.setPosition(pushDownPlate1.getPosition() + 0.3);
+            pushDownPlate2.setPosition(pushDownPlate1.getPosition() + 0.3);
         }
     }
 }
-//

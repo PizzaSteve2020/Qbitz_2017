@@ -46,6 +46,7 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
         gripper1 = hardwareMap.get(Servo.class, "gripper1");
         gripper2 = hardwareMap.get(Servo.class, "gripper2");
         jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
+        phone = hardwareMap.get(Servo.class, "phone");
 
         colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
 
@@ -77,6 +78,7 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
 
         while(opModeIsActive()) {
             RelicRecoveryVuMark vuMark =  RelicRecoveryVuMark.from(relicTemplate);
+            phone.setPosition(0);
     if(runtime.seconds()<10) {
          if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
@@ -85,6 +87,7 @@ public class BlueCornerAutonomous extends AutonomousExtendableClass {
 
         switch (vuMark) {
             case LEFT:
+
                 setGripper1(1);
                 setGripper2(1);
 

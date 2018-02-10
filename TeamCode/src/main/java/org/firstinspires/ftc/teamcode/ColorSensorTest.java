@@ -17,7 +17,6 @@ public class ColorSensorTest extends AutonomousExtendableClass {
     @Override
     public void runOpMode() {
 
-/*
         frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
 
@@ -39,11 +38,11 @@ public class ColorSensorTest extends AutonomousExtendableClass {
         gripper1 = hardwareMap.get(Servo.class, "gripper1");
         gripper2 = hardwareMap.get(Servo.class, "gripper2");
         jewelDisplacer = hardwareMap.get(Servo.class, "jewelDisplacer");
-        */
-        colorSensor = (LynxI2cColorRangeSensor) hardwareMap.get("colorSensor");
+        phone = hardwareMap.get(Servo.class, "phone");
 
+        colorSensor = hardwareMap.get(ColorSensor.class, "colorSensor");
         waitForStart();
-
+/*
         if(colorSensor.red()>40) {
             encoderDrive(0.5,-5,5,10);
             encoderDrive(0.5,5,-5,10);
@@ -55,5 +54,7 @@ public class ColorSensorTest extends AutonomousExtendableClass {
             telemetry.addData("Red", colorSensor.red());
             telemetry.update();
         }
+
+       */
     }
 }

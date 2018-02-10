@@ -21,6 +21,7 @@ public abstract class AutonomousExtendableClass extends LinearOpMode {
     protected Servo gripper1 = null;
     protected Servo gripper2 = null;
     protected Servo jewelDisplacer = null;
+    protected Servo phone = null;
 
     protected ColorSensor colorSensor = null;
     protected ElapsedTime runtime = new ElapsedTime();
